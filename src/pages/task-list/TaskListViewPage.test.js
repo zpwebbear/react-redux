@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { TaskListPage } from "./TaskListPage";
+import { TaskListViewPage } from "./TaskListViewPage";
 
 const tasksLists = [
   { id: 1, title: "Task List 1" },
@@ -7,9 +7,9 @@ const tasksLists = [
   { id: 3, title: "Task List 3" },
 ];
 
-describe("TaskListPage", () => {
+describe("TaskListViewPage", () => {
   test("Render the proper number of task lists", async () => {
-    render(<TaskListPage taskLists={tasksLists} />);
+    render(<TaskListViewPage taskLists={tasksLists} />);
 
     const taskListContainer = screen.getByTestId("task-list-container");
 
@@ -17,7 +17,7 @@ describe("TaskListPage", () => {
   });
 
   test("Render the placeholder when no task list exists", async () => {
-    render(<TaskListPage taskLists={[]} />);
+    render(<TaskListViewPage taskLists={[]} />);
 
     const taskListContainer = screen.getByTestId("task-list-container");
 
@@ -30,7 +30,7 @@ describe("TaskListPage", () => {
     const onCreateTaskListHandler = jest.fn();
 
     render(
-      <TaskListPage
+      <TaskListViewPage
         taskLists={tasksLists}
         onCreateTaskListHandler={onCreateTaskListHandler}
       />

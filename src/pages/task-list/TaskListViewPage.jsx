@@ -1,9 +1,18 @@
-import { TaskListCard } from "./components/task-list-card/TaskListCard";
 import PropTypes from "prop-types";
+import { useQuery } from "react-query";
+import { taskListAPI } from "../../api/task-list/TaskListAPI";
+import { TaskListCard } from "./components/task-list-card/TaskListCard";
 
-export const TaskListViewPage = ({ taskLists, onCreateTaskListHandler }) => {
+export const TaskListViewPage = ({ onCreateTaskListHandler }) => {
+  const { data: taskLists, isFetched } = useQuery({
+    queryKey: "task-lists",
+    queryFn: () => {
+      return taskListAPI.getAll();
+    },
+  });
+
   return (
-    <div className="w-auto p-20">
+    <>
       <header className="flex justify-between py-5 border-b-2 border-pink-800">
         <h2 className="text-purple-900 font-bold py-5 text-lg">Task Lists</h2>
         <button
@@ -15,18 +24,22 @@ export const TaskListViewPage = ({ taskLists, onCreateTaskListHandler }) => {
           Create Task List{" "}
         </button>
       </header>
-      <div className="grid grid-cols-3 gap-4 my-3" data-testid="task-list-container">
-        {taskLists.map((taskList) => (
-          <TaskListCard key={taskList.id} taskList={taskList} />
-        ))}
-        {taskLists.length === 0 && (
+      <div
+        className="grid grid-cols-3 gap-4 my-3"
+        data-testid="task-list-container"
+      >
+        {isFetched &&
+          taskLists.map((taskList) => (
+            <TaskListCard key={taskList.id} taskList={taskList} />
+          ))}
+        {isFetched && taskLists.length === 0 && (
           <h3 className="text-purple-600">
             There no task lists yet. Please create at least one!
           </h3>
         )}
       </div>
       <div className="pt-6 flex items-center"></div>
-    </div>
+    </>
   );
 };
 
