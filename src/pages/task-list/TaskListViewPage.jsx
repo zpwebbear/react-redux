@@ -1,27 +1,30 @@
-import PropTypes from "prop-types";
-import { useQuery } from "react-query";
-import { taskListAPI } from "../../api/task-list/TaskListAPI";
-import { TaskListCard } from "./components/task-list-card/TaskListCard";
+import { taskListRepository } from "features/task-list/infrastructure/repositories/TaskListRepository";
+import { taskRepository } from "features/task-list/infrastructure/repositories/TaskRepository";
+import { useTaskListService } from "features/task-list/application/useTaskListService";
+import { TaskListCard } from "pages/task-list/components/task-list-card/TaskListCard";
 
-export const TaskListViewPage = ({ onCreateTaskListHandler }) => {
-  const { data: taskLists, isFetched } = useQuery({
-    queryKey: "task-lists",
-    queryFn: () => {
-      return taskListAPI.getAll();
-    },
+export const TaskListViewPage = () => {
+  const { useTaskListGetAll, useTaskListCreate } = useTaskListService({
+    taskListAPI: taskListRepository,
+    taskAPI: taskRepository,
   });
+  const { data: taskLists, error, isFetched } = useTaskListGetAll();
+
+  if (error) {
+    return <h1>{error.message}</h1>;
+  }
 
   return (
     <>
       <header className="flex justify-between py-5 border-b-2 border-pink-800">
         <h2 className="text-purple-900 font-bold py-5 text-lg">Task Lists</h2>
         <button
-          onClick={onCreateTaskListHandler}
+          onClick={useTaskListCreate}
           className="text-pink-500 bg-transparent border border-solid border-pink-500 hover:bg-pink-500 hover:text-white active:bg-pink-600 font-bold uppercase text-xs px-5 py-1 rounded outline-none focus:outline-none mx-1 mb-1"
           type="button"
           style={{ transition: "all .15s ease" }}
         >
-          Create Task List{" "}
+          Create Task List
         </button>
       </header>
       <div
@@ -41,14 +44,4 @@ export const TaskListViewPage = ({ onCreateTaskListHandler }) => {
       <div className="pt-6 flex items-center"></div>
     </>
   );
-};
-
-TaskListViewPage.propTypes = {
-  taskList: PropTypes.array,
-  onCreateTaskListHandler: PropTypes.func,
-};
-
-TaskListViewPage.defaultProps = {
-  taskLists: [],
-  onCreateTaskListHandler: () => {},
 };

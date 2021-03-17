@@ -1,7 +1,7 @@
-import { ApiFactory } from "../api-factory/ApiFactory";
-import { fetchAPI } from "../fetch-api-service/FetchApi";
+import { ApiFactory } from "api/api-factory/ApiFactory";
+import { fetchAPI } from "api//fetch-api-service/FetchApi";
 
-const TaskListAPI = ApiFactory({
+const TaskListRepository = ApiFactory({
   // resourceUrl: "/tasks-lists",
   resourceUrl: "/task-lists",
   transport: fetchAPI
@@ -11,7 +11,7 @@ const TaskListAPI = ApiFactory({
  * This function is only the example of ability how to add new methods 
  * to the generated API classes
  */
-TaskListAPI.prototype.dummyCount = async function () {
+TaskListRepository.prototype.dummyCount = async function () {
     const result = await this._transport.get();
 
     console.log("RESULT", result);
@@ -19,4 +19,4 @@ TaskListAPI.prototype.dummyCount = async function () {
     return result;
 };
 
-export const taskListAPI = new TaskListAPI();
+export const taskListRepository = new TaskListRepository();
