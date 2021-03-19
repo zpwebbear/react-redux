@@ -1,27 +1,24 @@
-import { useTaskListService } from "features/task-list/application/useTaskListService";
-import { taskListRepository } from "features/task-list/infrastructure/repositories/TaskListRepository";
-import { taskRepository } from "features/task-list/infrastructure/repositories/TaskRepository";
-import { TaskItem } from "./TaskItem";
+import { useTaskListUpdateTask } from "features/task-list/application/use-cases/useTaskListUpdateTask";
 import PropTypes from "prop-types";
+import { TaskItem } from "./TaskItem";
 
 export const TaskItemProvider = ({ task }) => {
-  const { useTaskListUpdateTask } = useTaskListService({
-    taskListAPI: taskListRepository,
-    taskAPI: taskRepository,
-  });
+
   const { mutate } = useTaskListUpdateTask();
-  
+
   return (
     <TaskItem
       taskItem={task}
-      onCheckHandler={() => mutate({ ...task, completed: !task.completed })}
+      onCheckHandler={() => {
+        mutate({ ...task, completed: !task.completed });
+      }}
     />
   );
 };
 
 TaskItemProvider.propTypes = {
-    task: PropTypes.shape({
-        title: PropTypes.string,
-        completed: PropTypes.bool,
-    }).isRequired,
-}
+  task: PropTypes.shape({
+    title: PropTypes.string,
+    completed: PropTypes.bool,
+  }).isRequired,
+};

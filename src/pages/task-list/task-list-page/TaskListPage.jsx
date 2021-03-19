@@ -1,6 +1,6 @@
 import { useRedirect } from "features/shared/application/useRedirect";
 import PropTypes from "prop-types";
-import { TaskItemProvider } from "../components/task-item/TaskItemProvider";
+import { TaskItemProvider } from "pages/task-list/components/task-item/TaskItemProvider";
 
 export const TaskListPage = ({ taskList, isFetched }) => {
   const { redirectTo } = useRedirect();
@@ -12,8 +12,7 @@ export const TaskListPage = ({ taskList, isFetched }) => {
           Task List: {taskList?.title}
         </h2>
         <button
-          style={{ transition: "all .15s ease" }}
-          className="text-pink-500 bg-transparent border border-solid border-pink-500 hover:bg-pink-500 hover:text-white active:bg-pink-600 font-bold uppercase text-xs px-5 py-1 rounded outline-none focus:outline-none mx-1 mb-1"
+          className="transition-all duration-150 text-pink-500 bg-transparent border border-solid border-pink-500 hover:bg-pink-500 hover:text-white active:bg-pink-600 font-bold uppercase text-xs px-5 py-1 rounded outline-none focus:outline-none mx-1 mb-1"
           onClick={redirectTo("/")}
         >
           Back to the Home Page

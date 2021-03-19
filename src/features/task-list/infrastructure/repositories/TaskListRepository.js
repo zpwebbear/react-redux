@@ -1,7 +1,7 @@
 import { ApiFactory } from "api/api-factory/ApiFactory";
 import { fetchAPI } from "api//fetch-api-service/FetchApi";
 
-const TaskListRepository = ApiFactory({
+export const TaskListRepository = ApiFactory({
   // resourceUrl: "/tasks-lists",
   resourceUrl: "/task-lists",
   transport: fetchAPI

@@ -1,13 +1,7 @@
-import { useTaskListService } from "features/task-list/application/useTaskListService";
-import { taskListRepository } from "features/task-list/infrastructure/repositories/TaskListRepository";
-import { taskRepository } from "features/task-list/infrastructure/repositories/TaskRepository";
+import { useTaskListGetById } from "features/task-list/application/use-cases/useTaskListGetById";
 import { TaskListPage } from "./TaskListPage";
 
 export const TaskListPageProvider = () => {
-  const { useTaskListGetById } = useTaskListService({
-    taskListAPI: taskListRepository,
-    taskAPI: taskRepository,
-  });
   const { data: taskList, error, isFetched } = useTaskListGetById();
 
   if (error) {

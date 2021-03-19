@@ -1,3 +1,4 @@
+import { TaskListProvider } from "features/task-list/application/context/TaskListProvider";
 import { TaskListPageProvider } from "pages/task-list/task-list-page/TaskListPageProvider";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -10,14 +11,16 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <div className="w-auto p-20">
-        <Router>
-          <Switch>
-            <Route path="/task-list/:id" component={TaskListPageProvider} />
-            <Route path="*">
-              <TaskListViewPage />
-            </Route>
-          </Switch>
-        </Router>
+        <TaskListProvider>
+          <Router>
+            <Switch>
+              <Route path="/task-list/:id" component={TaskListPageProvider} />
+              <Route path="*">
+                <TaskListViewPage />
+              </Route>
+            </Switch>
+          </Router>
+        </TaskListProvider>
       </div>
     </QueryClientProvider>
   );
