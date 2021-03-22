@@ -1,5 +1,5 @@
-import { ApiFactory } from "api/api-factory/ApiFactory";
-import { fetchAPI } from "api/fetch-api-service/FetchApi";
+import { ApiFactory } from "lib/api/api-factory/ApiFactory";
+import { fetchAPI } from "lib/api/fetch-api-service/FetchApi";
 
 export const TaskRepository = ApiFactory({
   resourceUrl: "/tasks",

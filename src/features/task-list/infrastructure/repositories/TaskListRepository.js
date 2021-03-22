@@ -1,5 +1,5 @@
-import { ApiFactory } from "api/api-factory/ApiFactory";
-import { fetchAPI } from "api//fetch-api-service/FetchApi";
+import { ApiFactory } from "lib/api/api-factory/ApiFactory";
+import { fetchAPI } from "lib/api/fetch-api-service/FetchApi";
 
 export const TaskListRepository = ApiFactory({
   // resourceUrl: "/tasks-lists",
@@ -13,8 +13,6 @@ export const TaskListRepository = ApiFactory({
  */
 TaskListRepository.prototype.dummyCount = async function () {
     const result = await this._transport.get();
-
-    console.log("RESULT", result);
 
     return result;
 };

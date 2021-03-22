@@ -4,7 +4,7 @@ import { TaskRepository } from "../../infrastructure/repositories/TaskRepository
 
 export const TaskListContext = React.createContext({});
 
-export function TaskListProvider({ children }) {
+export const TaskListContextProvider = ({ children }) => {
   const taskListRepository = new TaskListRepository();
   const taskRepository = new TaskRepository();
 
