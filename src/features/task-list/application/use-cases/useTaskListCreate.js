@@ -1,24 +1,29 @@
-import { useDialogContext } from "features/dialog/application/context/useDialogContext";
-import { useEffect } from "react";
-import { TaskListCreateDialog } from "../components/TaskListCreateDialog";
+import { useMutation, useQueryClient } from "react-query";
+import { useTaskListContext } from "../context/useTaskListContext";
 
-export function useTaskListCreate() {
-  const {
-    dialogOpenHandler,
-    dialogRegisterHandler,
-    dialogUnregisterHandler,
-  } = useDialogContext();
-
-  useEffect(() => {
-    dialogRegisterHandler('task-list/create', TaskListCreateDialog);
-
-    return () => dialogUnregisterHandler('task-list/create')
-
-  }, [dialogRegisterHandler, dialogUnregisterHandler]);
-
-  return {
-    createTaskList: () => {
-      dialogOpenHandler("task-list/create");
+export function useTaskListCreate({
+  onMutateCallback = () => {},
+  onSuccessCallback = () => {},
+  onErrorCallback = () => {},
+}) {
+  const { taskListRepository } = useTaskListContext();
+  const queryClient = useQueryClient();
+  return useMutation(
+    async (newTaskList) => {
+      return taskListRepository.create(newTaskList);
     },
-  };
+    {
+      onError: (err, variables, context) => {
+        onErrorCallback(err, variables, context);
+      },
+
+      onSuccess: (data, variables, context) => {
+        onSuccessCallback(data, variables, context);
+        queryClient.setQueryData(["task-list"], (oldTaskLists) => [
+          ...oldTaskLists,
+          data,
+        ]);
+      },
+    }
+  );
 }

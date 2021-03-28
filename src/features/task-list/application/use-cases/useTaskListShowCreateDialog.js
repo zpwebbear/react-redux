@@ -1,4 +1,5 @@
 import { useDialogContext } from "features/dialog/application/context/useDialogContext";
+import { createTaskListDialogToken } from "features/task-list/domain/constants";
 import { useEffect } from "react";
 import { TaskListCreateDialog } from "../components/TaskListCreateDialog";
 
@@ -10,14 +11,14 @@ export function useTaskListShowCreateDialog() {
   } = useDialogContext();
 
   useEffect(() => {
-    dialogRegisterHandler("task-list/create", TaskListCreateDialog);
+    dialogRegisterHandler(createTaskListDialogToken, TaskListCreateDialog);
     
-    return () => dialogUnregisterHandler("task-list/create");
+    return () => dialogUnregisterHandler(createTaskListDialogToken);
   }, [dialogRegisterHandler, dialogUnregisterHandler]);
 
   return {
     showTaskListCreateDialog: () => {
-      dialogOpenHandler("task-list/create");
+      dialogOpenHandler(createTaskListDialogToken);
     },
   };
 }
