@@ -3,15 +3,14 @@ import { useRegisterReducer } from "lib/redux/useRegisterReducer";
 import { useSelectState } from "lib/redux/useSelectState";
 import { useCallback } from "react";
 import {
-  createTaskListDialogStateActions,
   createDialogTaskListStateSelectors,
-  createTaskListDialogStateSlice,
+  createTaskListDialogStateActions,
+  createTaskListDialogStateSlice
 } from "../state/createTaskListDialogState";
 import { useTaskListCloseCreateDialog } from "./useTaskListCloseCreateDialog";
 import { useTaskListCreate } from "./useTaskListCreate";
 
 export const useManageTaskListState = () => {
-
   useRegisterReducer(
     createTaskListDialogStateSlice.name,
     createTaskListDialogStateSlice.reducer
@@ -32,18 +31,15 @@ export const useManageTaskListState = () => {
     createTaskListDialogStateActions.updateProcessing
   );
 
-  const { mutate, isLoading } = useTaskListCreate({
-    onSuccessCallback: () => {
-      closeTaskListCreateDialog();
-    },
-  });
+  const { isLoading, mutateAsync } = useTaskListCreate({});
 
   const createTaskListHandler = useCallback(
-    (e) => {
+    async (e) => {
       e.preventDefault();
-      mutate({ title: taskListTitle });
+      await mutateAsync({ title: taskListTitle });
+      closeTaskListCreateDialog();
     },
-    [mutate, taskListTitle]
+    [closeTaskListCreateDialog, mutateAsync, taskListTitle]
   );
 
   return {

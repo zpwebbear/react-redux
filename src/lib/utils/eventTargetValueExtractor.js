@@ -1,0 +1,1 @@
+export const eventTargetValueExtractor = e => e.target.value;

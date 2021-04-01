@@ -1,6 +1,7 @@
 import { useRedirect } from "features/shared/application/useRedirect";
 import PropTypes from "prop-types";
 import { TaskItemProvider } from "pages/task-list/components/task-item/TaskItemProvider";
+import { TaskCreateItem } from "features/task-list/application/components/task-create-item/TaskCreateItem";
 
 export const TaskListPage = ({ taskList, isFetched }) => {
   const { redirectTo } = useRedirect();
@@ -24,6 +25,9 @@ export const TaskListPage = ({ taskList, isFetched }) => {
           taskList.tasks.map((task) => (
             <TaskItemProvider key={task.id} task={task} />
           ))}
+        <li>
+         <TaskCreateItem/>
+        </li>
       </ul>
     </div>
   );
