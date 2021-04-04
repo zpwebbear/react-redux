@@ -2,6 +2,9 @@ import { createSlice, createSelector } from "@reduxjs/toolkit";
 
 const initialState = {
   title: "",
+  isLoading: false,
+  errors: [],
+  tasks: [],
 };
 
 export const createTaskListDialogStateSlice = createSlice({
@@ -13,6 +16,12 @@ export const createTaskListDialogStateSlice = createSlice({
     },
     clearTitle: (state) => {
       state.title = initialState.title;
+    },
+    addTask: (state, action) => {
+      state.tasks.push(action.payload.task)
+    },
+    removeTaskById: (state, action) => {
+      state.tasks = state.tasks.filter(task => task.id = action.payload.id)
     },
   },
 });
@@ -34,7 +43,13 @@ const selectProcessing = createSelector(
   (taskList) => taskList.processing
 );
 
-export const createDialogTaskListStateSelectors = {
+const selectTasks = createSelector(
+  createTaskListDialogStateDomain,
+  (taskList) => taskList.tasks,
+)
+
+export const createTaskListStateDialogSelectors = {
   selectTitle,
   selectProcessing,
+  selectTasks
 };

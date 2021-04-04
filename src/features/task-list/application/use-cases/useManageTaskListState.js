@@ -3,9 +3,9 @@ import { useRegisterReducer } from "lib/redux/useRegisterReducer";
 import { useSelectState } from "lib/redux/useSelectState";
 import { useCallback } from "react";
 import {
-  createDialogTaskListStateSelectors,
+  createTaskListStateDialogSelectors,
   createTaskListDialogStateActions,
-  createTaskListDialogStateSlice
+  createTaskListDialogStateSlice,
 } from "../state/createTaskListDialogState";
 import { useTaskListCloseCreateDialog } from "./useTaskListCloseCreateDialog";
 import { useTaskListCreate } from "./useTaskListCreate";
@@ -19,7 +19,11 @@ export const useManageTaskListState = () => {
   const { closeTaskListCreateDialog } = useTaskListCloseCreateDialog();
 
   const taskListTitle = useSelectState(
-    createDialogTaskListStateSelectors.selectTitle
+    createTaskListStateDialogSelectors.selectTitle
+  );
+
+  const taskListTasks = useSelectState(
+    createTaskListStateDialogSelectors.selectTasks
   );
 
   // TODO: Add throttling here
@@ -29,6 +33,10 @@ export const useManageTaskListState = () => {
 
   const updateTaskListProcessing = useDispatchAction(
     createTaskListDialogStateActions.updateProcessing
+  );
+
+  const addTaskToTaskListHandler = useDispatchAction(
+    createTaskListDialogStateActions.addTask
   );
 
   const { isLoading, mutateAsync } = useTaskListCreate({});
@@ -43,10 +51,12 @@ export const useManageTaskListState = () => {
   );
 
   return {
+    taskListTasks,
     taskListTitle,
     taskListProcessing: isLoading,
     updateTaskListTitleHandler,
     updateTaskListProcessing,
     createTaskListHandler,
+    addTaskToTaskListHandler,
   };
 };

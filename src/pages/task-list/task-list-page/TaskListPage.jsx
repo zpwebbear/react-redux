@@ -1,11 +1,46 @@
 import { useRedirect } from "features/shared/application/useRedirect";
-import PropTypes from "prop-types";
-import { TaskItemProvider } from "pages/task-list/components/task-item/TaskItemProvider";
 import { TaskCreateItem } from "features/task-list/application/components/task-create-item/TaskCreateItem";
+import { useTaskListGetById } from "features/task-list/application/use-cases/useTaskListGetById";
+import { useTaskListUpdateTask } from "features/task-list/application/use-cases/useTaskListUpdateTask";
+import { useTaskCreateProvider } from "features/task-list/infrastructure/providers/TaskCreateProvider";
+import PropTypes from "prop-types";
+import { useCallback, useEffect } from "react";
+import { useProviderRegister } from "../../../app/provider-container/ProviderContainer";
+import { TaskItem } from "../components/task-item/TaskItem";
 
-export const TaskListPage = ({ taskList, isFetched }) => {
+const useTaskListPageState = () => {
   const { redirectTo } = useRedirect();
+  const { mutate } = useTaskListUpdateTask();
 
+  const { register, unregister } = useProviderRegister();
+
+  useEffect(() => {
+    register("taskCreateProvider", useTaskCreateProvider);
+    return () => unregister("taskCreateProvider");
+  }, [register, unregister]);
+
+  const { data: taskList, error, isFetched } = useTaskListGetById();
+  const onCheckHandler = useCallback(
+    (taskItem) => {
+      mutate({ ...taskItem, completed: !taskItem.completed });
+    },
+    [mutate]
+  );
+  return { redirectTo, onCheckHandler, taskList, error, isFetched };
+};
+
+export const TaskListPage = () => {
+  const {
+    redirectTo,
+    onCheckHandler,
+    taskList,
+    error,
+    isFetched,
+  } = useTaskListPageState();
+
+  if (error) {
+    return <h1>{error.message}</h1>;
+  }
   return (
     <div>
       <header className="flex justify-between py-5 border-b-2 border-pink-800">
@@ -23,10 +58,10 @@ export const TaskListPage = ({ taskList, isFetched }) => {
         {isFetched &&
           taskList.tasks &&
           taskList.tasks.map((task) => (
-            <TaskItemProvider key={task.id} task={task} />
+            <TaskItem key={task.id} taskItem={task} onCheck={onCheckHandler} />
           ))}
         <li>
-         <TaskCreateItem/>
+          <TaskCreateItem provider="taskCreateProvider" />
         </li>
       </ul>
     </div>

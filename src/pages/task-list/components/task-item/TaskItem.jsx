@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-export const TaskItem = ({ taskItem, onCheckHandler }) => {
+export const TaskItem = ({ taskItem, onCheck }) => {
   return (
     <li className="py-1">
       <label className="cursor-pointer hover:text-purple-700">
@@ -8,7 +8,7 @@ export const TaskItem = ({ taskItem, onCheckHandler }) => {
           type="checkbox"
           data-testid="task-item-checkbox"
           checked={taskItem.completed}
-          onChange={onCheckHandler}
+          onChange={() => onCheck(taskItem)}
         />
         <span className="px-5">{taskItem.title}</span>
       </label>
@@ -22,5 +22,5 @@ TaskItem.propTypes = {
     title: PropTypes.string,
     completed: PropTypes.bool,
   }),
-  onCheckHandler: PropTypes.func,
+  onCheck: PropTypes.func,
 };

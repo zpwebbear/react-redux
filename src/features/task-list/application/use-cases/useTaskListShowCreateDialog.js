@@ -1,7 +1,7 @@
 import { useDialogContext } from "features/dialog/application/context/useDialogContext";
 import { createTaskListDialogToken } from "features/task-list/domain/constants";
 import { useEffect } from "react";
-import { TaskListCreateDialog } from "../components/TaskListCreateDialog";
+import { TaskListCreateDialog } from "../components/task-list-create-dialog/TaskListCreateDialog";
 
 export function useTaskListShowCreateDialog() {
   const {

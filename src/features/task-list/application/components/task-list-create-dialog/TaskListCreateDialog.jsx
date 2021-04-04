@@ -1,14 +1,18 @@
+import { TaskItem } from "pages/task-list/components/task-item/TaskItem";
 import React from "react";
-import { useManageTaskListState } from "../use-cases/useManageTaskListState";
-import { useTaskListCloseCreateDialog } from "../use-cases/useTaskListCloseCreateDialog";
+import { useManageTaskListState } from "../../use-cases/useManageTaskListState";
+import { useTaskListCloseCreateDialog } from "../../use-cases/useTaskListCloseCreateDialog";
+import { TaskCreateItem } from "../task-create-item/TaskCreateItem";
 
 export const TaskListCreateDialog = () => {
   const { closeTaskListCreateDialog } = useTaskListCloseCreateDialog();
   const {
+    taskListTasks,
     taskListTitle,
     taskListProcessing,
     createTaskListHandler,
     updateTaskListTitleHandler,
+    addTaskToTaskListHandler,
   } = useManageTaskListState();
 
   return (
@@ -54,6 +58,28 @@ export const TaskListCreateDialog = () => {
                           updateTaskListTitleHandler({ title: e.target.value })
                         }
                       />
+                    </div>
+                    <div className="mt-1">
+                      <div>
+                        <label
+                          htmlFor="about"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Items
+                        </label>
+                        <div className="mt-1">
+                          <ul>
+                            {taskListTasks.map((task) => (
+                              <TaskItem
+                                key={task.id}
+                                taskItem={task}
+                                onCheck={addTaskToTaskListHandler}
+                              />
+                            ))}
+                            <TaskCreateItem />
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

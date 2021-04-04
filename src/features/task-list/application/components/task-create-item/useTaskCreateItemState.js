@@ -1,35 +1,28 @@
+import { useProvider } from "app/provider-container/ProviderContainer";
 import { eventTargetValueExtractor } from "lib/utils/eventTargetValueExtractor";
-import { useCallback, useRef, useState } from "react";
-import { compose } from "redux";
-import { useTaskListCreateTask } from "../../use-cases/useTaskListCreateTask";
+import { useCallback } from "react";
 
+export const useTaskCreateItemState = ({ provider }) => {
+  const { subscribe, dispatch } = useProvider(provider);
 
-export const useTaskCreateItemState = () => {
-  const [newTaskTitle, setNewTaskTitle] = useState("");
-  const newTaskInputRef = useRef(null);
+  const newTaskTitle = subscribe("taskTitle");
+  const newTaskInputRef = subscribe("taskInputRef");
+  const isLoading = subscribe("isLoading");
 
-  const { mutate, isLoading } = useTaskListCreateTask({
-    onSuccessCallback: () => {
-      // setNewTaskTitle("");
-    },
-    onSettledCallback: () => {
-      setNewTaskTitle("");
-      setTimeout(() => {
-        newTaskInputRef.current?.focus();
-      }, 0);
-    },
-  });
   const taskCreateSubmitHandler = useCallback(
     (e) => {
-      e.preventDefault();
-      mutate({ title: newTaskTitle });
+      e?.preventDefault();
+      dispatch({ type: "createNewTask", payload: { title: newTaskTitle } });
     },
-    [mutate, newTaskTitle]
+    [dispatch, newTaskTitle]
   );
 
   const setNewTaskListTitleHandler = useCallback(
-    (e) => compose(setNewTaskTitle, eventTargetValueExtractor)(e),
-    []
+    (e) => {
+      const payload = eventTargetValueExtractor(e);
+      dispatch({ type: "updateTaskTitle", payload });
+    },
+    [dispatch]
   );
 
   return {
