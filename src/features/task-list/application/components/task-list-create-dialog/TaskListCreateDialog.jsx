@@ -12,7 +12,7 @@ export const TaskListCreateDialog = () => {
     taskListProcessing,
     createTaskListHandler,
     updateTaskListTitleHandler,
-    addTaskToTaskListHandler,
+    updateTaskInTaskListHandler,
   } = useManageTaskListState();
 
   return (
@@ -73,10 +73,15 @@ export const TaskListCreateDialog = () => {
                               <TaskItem
                                 key={task.id}
                                 taskItem={task}
-                                onCheck={addTaskToTaskListHandler}
+                                onCheck={() =>
+                                  updateTaskInTaskListHandler({
+                                    id: task.id,
+                                    completed: !task.completed,
+                                  })
+                                }
                               />
                             ))}
-                            <TaskCreateItem />
+                            <TaskCreateItem provider="taskCreateTemporaryProvider" />
                           </ul>
                         </div>
                       </div>

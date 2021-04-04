@@ -17,7 +17,7 @@ function App() {
     <Router>
       <ProviderContainer>
         <QueryClientProvider client={queryClient}>
-          <ReactQueryDevtools initialIsOpen={true} />
+          {/* <ReactQueryDevtools initialIsOpen={true} /> */}
           <TaskListContextProvider>
             <Provider store={applicationStore}>
               <DialogContextProvider>

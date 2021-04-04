@@ -39,6 +39,10 @@ export const useManageTaskListState = () => {
     createTaskListDialogStateActions.addTask
   );
 
+  const updateTaskInTaskListHandler = useDispatchAction(
+    createTaskListDialogStateActions.updateTaskById
+  );
+
   const { isLoading, mutateAsync } = useTaskListCreate({});
 
   const createTaskListHandler = useCallback(
@@ -58,5 +62,6 @@ export const useManageTaskListState = () => {
     updateTaskListProcessing,
     createTaskListHandler,
     addTaskToTaskListHandler,
+    updateTaskInTaskListHandler,
   };
 };

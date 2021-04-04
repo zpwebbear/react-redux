@@ -1,4 +1,5 @@
-import React, { useCallback, useContext } from "react";
+import { providerContainerConfig } from "appConfig";
+import React, { useContext, useState } from "react";
 
 export const ProviderContainerContext = React.createContext({});
 
@@ -6,31 +7,15 @@ export const useProvider = (token) => {
   const { providers } = useContext(ProviderContainerContext);
 
   const provider = providers.get(token);
-  return provider ? provider() : ({ subscribe: () => {}, dispatch: () => {} });
+  return provider ? provider() : { subscribe: () => {}, dispatch: () => {} };
 };
-
-export const useProviderRegister = () => {
-  const { register, unregister } = useContext(ProviderContainerContext);
-
-  return { register, unregister };
-};
-
-const providersContainer = new Map();
 
 export const ProviderContainer = ({ children }) => {
-  const register = useCallback((token, provider) => {
-    providersContainer.set(token, provider);
-  }, []);
-
-  const unregister = useCallback((token) => {
-    providersContainer.delete(token);
-  }, []);
+  const [providersContainer] = useState(new Map(providerContainerConfig));
 
   return (
     <ProviderContainerContext.Provider
       value={{
-        register,
-        unregister,
         providers: providersContainer,
       }}
     >

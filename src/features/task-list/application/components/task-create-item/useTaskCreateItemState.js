@@ -12,6 +12,9 @@ export const useTaskCreateItemState = ({ provider }) => {
   const taskCreateSubmitHandler = useCallback(
     (e) => {
       e?.preventDefault();
+      if (newTaskTitle.trim().length === 0) {
+        return;
+      }
       dispatch({ type: "createNewTask", payload: { title: newTaskTitle } });
     },
     [dispatch, newTaskTitle]

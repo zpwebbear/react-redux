@@ -1,4 +1,4 @@
-import { createSlice, createSelector } from "@reduxjs/toolkit";
+import { createSlice, createSelector, nanoid } from "@reduxjs/toolkit";
 
 const initialState = {
   title: "",
@@ -18,10 +18,17 @@ export const createTaskListDialogStateSlice = createSlice({
       state.title = initialState.title;
     },
     addTask: (state, action) => {
-      state.tasks.push(action.payload.task)
+      state.tasks.push({ ...action.payload, id: nanoid(), completed: false });
     },
     removeTaskById: (state, action) => {
-      state.tasks = state.tasks.filter(task => task.id = action.payload.id)
+      state.tasks = state.tasks.filter((task) => (task.id = action.payload.id));
+    },
+    updateTaskById: (state, action) => {
+      const index = state.tasks.findIndex(task =>task.id === action.payload.id);
+      state.tasks[index] = {
+        ...state.tasks[index],
+        ...action.payload
+      }
     },
   },
 });
@@ -45,11 +52,11 @@ const selectProcessing = createSelector(
 
 const selectTasks = createSelector(
   createTaskListDialogStateDomain,
-  (taskList) => taskList.tasks,
-)
+  (taskList) => taskList.tasks
+);
 
 export const createTaskListStateDialogSelectors = {
   selectTitle,
   selectProcessing,
-  selectTasks
+  selectTasks,
 };

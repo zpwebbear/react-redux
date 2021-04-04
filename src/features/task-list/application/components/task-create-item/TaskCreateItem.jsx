@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { useTaskCreateItemState } from "./useTaskCreateItemState";
 
-export const TaskCreateItem = (props) => {
+export const TaskCreateItem = memo((props) => {
   const {
     newTaskTitle,
     setNewTaskListTitleHandler,
@@ -10,10 +11,7 @@ export const TaskCreateItem = (props) => {
   } = useTaskCreateItemState(props);
 
   return (
-    <div
-      className="flex justify-between max-w-sm py-2"
-      onSubmit={taskCreateSubmitHandler}
-    >
+    <div className="flex justify-between max-w-sm py-2">
       <input
         ref={newTaskInputRef}
         disabled={isLoading}
@@ -33,11 +31,10 @@ export const TaskCreateItem = (props) => {
       <button
         disabled={isLoading}
         onClick={taskCreateSubmitHandler}
-        type="submit"
         className="flex-shrink-0 ml-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50"
       >
         Create Task
       </button>
     </div>
   );
-};
+});

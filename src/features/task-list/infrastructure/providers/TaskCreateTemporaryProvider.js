@@ -1,6 +1,4 @@
-import {
-  createTaskListDialogStateActions
-} from "features/task-list/state/createTaskListDialogState";
+import { createTaskListDialogStateActions } from "features/task-list/application/state/createTaskListDialogState";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 
