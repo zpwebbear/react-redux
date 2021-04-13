@@ -1,3 +1,4 @@
+//@ts-check
 import { useTaskListCreateTask } from "features/task-list/application/use-cases/useTaskListCreateTask";
 import { useCallback, useMemo, useRef, useState } from "react";
 
@@ -19,7 +20,7 @@ export const useTaskCreateProvider = () => {
       taskInputRef: newTaskInputRef,
       isLoading: isLoading,
     }),
-    [isLoading, newTaskTitle]
+    [isLoading, newTaskTitle],
   );
 
   const dispatchable = useMemo(
@@ -27,21 +28,21 @@ export const useTaskCreateProvider = () => {
       updateTaskTitle: setNewTaskTitle,
       createNewTask: mutate,
     }),
-    [mutate]
+    [mutate],
   );
 
   const subscribe = useCallback(
     (token) => {
       return subscribable[token];
     },
-    [subscribable]
+    [subscribable],
   );
 
   const dispatch = useCallback(
     ({ type, payload }) => {
       dispatchable[type](payload);
     },
-    [dispatchable]
+    [dispatchable],
   );
 
   return { subscribe, dispatch };
