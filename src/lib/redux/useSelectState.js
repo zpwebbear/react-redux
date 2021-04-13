@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-export function useSelectState(selector) {
+export function useSelectState(selector, ...params) {
 
-  return useSelector(selector);
+  return useSelector(state => selector(state, ...params));
 }

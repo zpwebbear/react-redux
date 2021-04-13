@@ -1,15 +1,29 @@
 import { memo } from "react";
-import { useTaskCreateItemState } from "./useTaskCreateItemState";
+import {
+  useTaskItemCreateAndEditInTaskListCreateDialog,
+  useTaskItemCreateAndEditOnTaskListPage,
+} from "./hookProviders";
 
-export const TaskCreateItem = memo((props) => {
+const providers = {
+  default: useTaskItemCreateAndEditOnTaskListPage,
+  taskListCreateDialog: useTaskItemCreateAndEditInTaskListCreateDialog,
+};
+
+const useTaskItemCreateAndEditState = (props) => {
+  const { provider = "default", ...restProps } = props;
+  const useProviderHook = providers[provider];
+
+  return useProviderHook(restProps);
+};
+
+export const TaskItemCreateAndEdit = memo((props) => {
   const {
     newTaskTitle,
-    setNewTaskListTitleHandler,
-    taskCreateSubmitHandler,
-    isLoading,
     newTaskInputRef,
-  } = useTaskCreateItemState(props);
-
+    isLoading,
+    taskCreateSubmitHandler,
+    setNewTaskListTitleHandler,
+  } = useTaskItemCreateAndEditState(props);
   return (
     <div className="flex justify-between max-w-sm py-2">
       <input
@@ -24,6 +38,7 @@ export const TaskCreateItem = memo((props) => {
         onChange={setNewTaskListTitleHandler}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
+            e.preventDefault();
             taskCreateSubmitHandler();
           }
         }}
@@ -31,6 +46,7 @@ export const TaskCreateItem = memo((props) => {
       <button
         disabled={isLoading}
         onClick={taskCreateSubmitHandler}
+        type="button"
         className="flex-shrink-0 ml-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50"
       >
         Create Task

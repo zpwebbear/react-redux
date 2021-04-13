@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { useParams } from "react-router";
 
 export const useTaskListCreateTask = ({
-  params = { externalId: undefined },
+  params = { taskListId: undefined, optimistic: true },
   onMutateCallback = () => {},
   onSuccessCallback = () => {},
   onErrorCallback = () => {},
@@ -13,12 +13,16 @@ export const useTaskListCreateTask = ({
   const { id } = useParams();
   const { taskRepository } = useTaskListContext();
 
-  const queryKeyId = params.externalId ?? id;
+  const queryKeyId = params.taskListId ?? id;
+  const optimistic = params.optimistic;
   const queryClient = useQueryClient();
 
   return useMutation(
-    (newTask) => {
-      return taskRepository.createTaskInTaskList(queryKeyId, newTask);
+    ({ task, taskListId }) => {
+      return taskRepository.createTaskInTaskList(
+        taskListId || queryKeyId,
+        task
+      );
     },
     {
       onMutate: async (variables) => {
@@ -28,9 +32,13 @@ export const useTaskListCreateTask = ({
           "task-list",
           queryKeyId,
         ]);
-        queryClient.setQueryData(["task-list", queryKeyId], (existedTaskList) =>
-          addTaskToTaskList(existedTaskList, variables)
-        );
+        if (optimistic) {
+          queryClient.setQueryData(
+            ["task-list", queryKeyId],
+            (existedTaskList) =>
+              addTaskToTaskList(existedTaskList, variables.task)
+          );
+        }
 
         return previousValue;
       },

@@ -30,7 +30,7 @@ export const useTaskCreateTemporaryProvider = () => {
   const dispatchable = useMemo(
     () => ({
       updateTaskTitle: setNewTaskTitle,
-      createNewTask,
+      createNewTask: createNewTask,
     }),
     [createNewTask]
   );

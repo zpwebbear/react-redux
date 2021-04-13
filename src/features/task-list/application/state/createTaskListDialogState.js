@@ -24,11 +24,13 @@ export const createTaskListDialogStateSlice = createSlice({
       state.tasks = state.tasks.filter((task) => (task.id = action.payload.id));
     },
     updateTaskById: (state, action) => {
-      const index = state.tasks.findIndex(task =>task.id === action.payload.id);
+      const index = state.tasks.findIndex(
+        (task) => task.id === action.payload.id
+      );
       state.tasks[index] = {
         ...state.tasks[index],
-        ...action.payload
-      }
+        ...action.payload,
+      };
     },
   },
 });
@@ -55,8 +57,23 @@ const selectTasks = createSelector(
   (taskList) => taskList.tasks
 );
 
+const selectTaskIds = createSelector(selectTasks, (tasks) =>
+  tasks.map((task) => task.id)
+);
+
+const selectTaskById = createSelector(
+  selectTasks,
+  (_, id) => id,
+  (tasks, id) => {
+    console.count(id)
+    return tasks.find((task) => task.id === id);
+  }
+);
+
 export const createTaskListStateDialogSelectors = {
   selectTitle,
   selectProcessing,
   selectTasks,
+  selectTaskIds,
+  selectTaskById,
 };

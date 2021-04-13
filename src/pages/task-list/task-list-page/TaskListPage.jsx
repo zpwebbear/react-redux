@@ -1,37 +1,25 @@
 import { useRedirect } from "features/shared/application/useRedirect";
-import { TaskCreateItem } from "features/task-list/application/components/task-create-item/TaskCreateItem";
+import { TaskItemCreateAndEdit } from "features/task-list/application/components/task-item/create-adn-edit/TaskItemCreateAndEdit";
+import { TaskItem } from "features/task-list/application/components/task-item/item/TaskItem";
+import { TaskItemList } from "features/task-list/application/components/task-item/list/TaskItemList";
 import { useTaskListGetById } from "features/task-list/application/use-cases/useTaskListGetById";
-import { useTaskListUpdateTask } from "features/task-list/application/use-cases/useTaskListUpdateTask";
-import PropTypes from "prop-types";
-import { useCallback } from "react";
-import { TaskItem } from "../components/task-item/TaskItem";
+import { Suspense } from "react";
 
 const useTaskListPageState = () => {
   const { redirectTo } = useRedirect();
-  const { mutate } = useTaskListUpdateTask();
+  const { data: taskList } = useTaskListGetById(null, {
+    select: (t) => ({ title: t.title }),
+  });
 
-  const { data: taskList, error, isFetched } = useTaskListGetById();
-  const onCheckHandler = useCallback(
-    (taskItem) => {
-      mutate({ ...taskItem, completed: !taskItem.completed });
-    },
-    [mutate]
-  );
-  return { redirectTo, onCheckHandler, taskList, error, isFetched };
+  return {
+    redirectTo,
+    taskList,
+  };
 };
 
 export const TaskListPage = () => {
-  const {
-    redirectTo,
-    onCheckHandler,
-    taskList,
-    error,
-    isFetched,
-  } = useTaskListPageState();
+  const { redirectTo, taskList } = useTaskListPageState();
 
-  if (error) {
-    return <h1>{error.message}</h1>;
-  }
   return (
     <div>
       <header className="flex justify-between py-5 border-b-2 border-pink-800">
@@ -39,30 +27,18 @@ export const TaskListPage = () => {
           Task List: {taskList?.title}
         </h2>
         <button
-          className="transition-all duration-150 text-pink-500 bg-transparent border border-solid border-pink-500 hover:bg-pink-500 hover:text-white active:bg-pink-600 font-bold uppercase text-xs px-5 py-1 rounded outline-none focus:outline-none mx-1 mb-1"
+          className="flex-shrink-0 ml-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50"
           onClick={redirectTo("/")}
         >
           Back to the Home Page
         </button>
       </header>
-      <ul className="py-2">
-        {isFetched &&
-          taskList.tasks &&
-          taskList.tasks.map((task) => (
-            <TaskItem key={task.id} taskItem={task} onCheck={onCheckHandler} />
-          ))}
-        <li>
-          <TaskCreateItem provider="taskCreateProvider" />
-        </li>
-      </ul>
+
+      <Suspense fallback={<div>Task List Loading...</div>}>
+        <TaskItemList newTaskItem={<TaskItemCreateAndEdit />}>
+          <TaskItem />
+        </TaskItemList>
+      </Suspense>
     </div>
   );
-};
-
-TaskListPage.propTypes = {
-  taskList: PropTypes.shape({
-    title: PropTypes.string,
-    tasks: PropTypes.array,
-  }),
-  isFetched: PropTypes.bool,
 };

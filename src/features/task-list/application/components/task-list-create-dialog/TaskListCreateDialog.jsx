@@ -1,19 +1,17 @@
-import { TaskItem } from "pages/task-list/components/task-item/TaskItem";
 import React from "react";
-import { useManageTaskListState } from "../../use-cases/useManageTaskListState";
-import { useTaskListCloseCreateDialog } from "../../use-cases/useTaskListCloseCreateDialog";
-import { TaskCreateItem } from "../task-create-item/TaskCreateItem";
+import { TaskItemCreateAndEdit } from "../task-item/create-adn-edit/TaskItemCreateAndEdit";
+import { TaskItem } from "../task-item/item/TaskItem";
+import { TaskItemList } from "../task-item/list/TaskItemList";
+import { useTaskListCreateDialogState } from "./useTaskListCreateDialogState";
 
 export const TaskListCreateDialog = () => {
-  const { closeTaskListCreateDialog } = useTaskListCloseCreateDialog();
   const {
-    taskListTasks,
     taskListTitle,
     taskListProcessing,
     createTaskListHandler,
     updateTaskListTitleHandler,
-    updateTaskInTaskListHandler,
-  } = useManageTaskListState();
+    closeTaskListCreateDialog,
+  } = useTaskListCreateDialogState();
 
   return (
     <div className="fixed z-10 inset-0 overflow-y-auto">
@@ -68,21 +66,14 @@ export const TaskListCreateDialog = () => {
                           Items
                         </label>
                         <div className="mt-1">
-                          <ul>
-                            {taskListTasks.map((task) => (
-                              <TaskItem
-                                key={task.id}
-                                taskItem={task}
-                                onCheck={() =>
-                                  updateTaskInTaskListHandler({
-                                    id: task.id,
-                                    completed: !task.completed,
-                                  })
-                                }
-                              />
-                            ))}
-                            <TaskCreateItem provider="taskCreateTemporaryProvider" />
-                          </ul>
+                          <TaskItemList
+                            provider="taskListCreateDialog"
+                            newTaskItem={
+                              <TaskItemCreateAndEdit provider="taskListCreateDialog" />
+                            }
+                          >
+                            <TaskItem provider="taskListCreateDialog" />
+                          </TaskItemList>
                         </div>
                       </div>
                     </div>
