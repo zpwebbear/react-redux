@@ -3,6 +3,9 @@ import React, { useContext, useState } from "react";
 
 export const ProviderContainerContext = React.createContext({});
 
+/**
+ * @param {string} token
+ */
 export const useProvider = (token) => {
   const { providers } = useContext(ProviderContainerContext);
 

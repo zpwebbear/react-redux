@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "baseUrl": "src"
+    "jsx": "react",
+    "baseUrl": "src",
+    "downlevelIteration": true
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }
