@@ -1,9 +1,9 @@
-import { closeActiveOnTopDialog } from "features/dialog/domain/closeActiveOnTopDialog";
-import { closeDialog } from "features/dialog/domain/closeDialog";
-import { openDialog } from "features/dialog/domain/openDialog";
-import { registerDialog } from "features/dialog/domain/registerDialog";
-import { toggleDialog } from "features/dialog/domain/toggleDialog";
-import { unregisterDialog } from "features/dialog/domain/unregisterDialog";
+import { closeActiveOnTopDialog } from "app/dialog/domain/closeActiveOnTopDialog";
+import { closeDialog } from "app/dialog/domain/closeDialog";
+import { openDialog } from "app/dialog/domain/openDialog";
+import { registerDialog } from "app/dialog/domain/registerDialog";
+import { toggleDialog } from "app/dialog/domain/toggleDialog";
+import { unregisterDialog } from "app/dialog/domain/unregisterDialog";
 import React, { useCallback, useMemo, useReducer } from "react";
 import ReactDOM from "react-dom";
 

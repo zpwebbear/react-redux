@@ -1,4 +1,4 @@
-import { useDialogContext } from "features/dialog/application/context/useDialogContext";
+import { useDialogContext } from "app/dialog/application/context/useDialogContext";
 
 export function useTaskListCloseCreateDialog() {
   const { dialogCloseHandler } = useDialogContext();

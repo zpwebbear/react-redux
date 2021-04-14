@@ -1,4 +1,4 @@
-import { useDialogContext } from "features/dialog/application/context/useDialogContext";
+import { useDialogContext } from "app/dialog/application/context/useDialogContext";
 import { createTaskListDialogToken } from "features/task-list/domain/constants";
 import { useEffect } from "react";
 import { TaskListCreateDialog } from "../widgets/task-list-create-dialog/TaskListCreateDialogWidget";

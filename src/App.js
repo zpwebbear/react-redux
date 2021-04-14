@@ -1,5 +1,5 @@
 import { UseCaseContainer } from "app/use-case-container/UseCaseContainer";
-import { DialogContextProvider } from "features/dialog/application/context/DialogContextProvider";
+import { DialogContextProvider } from "app/dialog/application/context/DialogContextProvider";
 import { TaskListContextProvider } from "features/task-list/application/context/TaskListContextProvider";
 import { TaskListPage } from "pages/task-list/task-list-page/TaskListPage";
 import { QueryClient, QueryClientProvider } from "react-query";
