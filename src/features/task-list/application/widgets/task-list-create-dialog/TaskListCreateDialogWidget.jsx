@@ -1,8 +1,8 @@
 import React from "react";
-import { TaskItemCreateAndEdit } from "../task-item/create-adn-edit/TaskItemCreateAndEdit";
-import { TaskItem } from "../task-item/item/TaskItem";
-import { TaskItemList } from "../task-item/list/TaskItemList";
-import { useTaskListCreateDialogState } from "./useTaskListCreateDialogState";
+import { TaskItemCreateAndEditComponent } from "../../components/task-item/create-and-edit/TaskItemCreateAndEditComponent";
+import { TaskItemComponent } from "../../components/task-item/item/TaskItemComponent";
+import { TaskItemListWidget } from "../task-item-list/TaskItemListWidget";
+import { useTaskListCreateDialogState } from "./useTaskListCreateDialogWidgetState";
 
 export const TaskListCreateDialog = () => {
   const {
@@ -66,14 +66,14 @@ export const TaskListCreateDialog = () => {
                           Items
                         </label>
                         <div className="mt-1">
-                          <TaskItemList
-                            provider="taskListCreateDialog"
+                          <TaskItemListWidget
+                            context="taskListCreateDialog"
                             newTaskItem={
-                              <TaskItemCreateAndEdit provider="taskListCreateDialog" />
+                              <TaskItemCreateAndEditComponent context="taskListCreateDialog" />
                             }
                           >
-                            <TaskItem provider="taskListCreateDialog" />
-                          </TaskItemList>
+                            <TaskItemComponent context="taskListCreateDialog" />
+                          </TaskItemListWidget>
                         </div>
                       </div>
                     </div>

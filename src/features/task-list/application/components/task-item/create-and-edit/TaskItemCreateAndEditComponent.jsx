@@ -1,22 +1,21 @@
+import { componentStateHookFactory } from "app/component-state/componentStateHookFactory";
 import { memo } from "react";
 import {
   useTaskItemCreateAndEditInTaskListCreateDialog,
   useTaskItemCreateAndEditOnTaskListPage,
-} from "./hookProviders";
+} from "./taskItemCreateAndEditComponentState";
 
-const providers = {
-  default: useTaskItemCreateAndEditOnTaskListPage,
+const hooks = {
+  taskListPage: useTaskItemCreateAndEditOnTaskListPage,
   taskListCreateDialog: useTaskItemCreateAndEditInTaskListCreateDialog,
 };
 
-const useTaskItemCreateAndEditState = (props) => {
-  const { provider = "default", ...restProps } = props;
-  const useProviderHook = providers[provider];
+const useTaskItemCreateAndEditState = componentStateHookFactory(hooks, [
+  "taskListPage",
+  "taskListCreateDialog",
+]);
 
-  return useProviderHook(restProps);
-};
-
-export const TaskItemCreateAndEdit = memo((props) => {
+export const TaskItemCreateAndEditComponent = memo((props) => {
   const {
     newTaskTitle,
     newTaskInputRef,
@@ -54,3 +53,5 @@ export const TaskItemCreateAndEdit = memo((props) => {
     </div>
   );
 });
+
+TaskItemCreateAndEditComponent.displayName = "TaskItemCreateAndEdit";

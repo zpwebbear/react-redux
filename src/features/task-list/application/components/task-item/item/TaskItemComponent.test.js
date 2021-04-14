@@ -1,5 +1,5 @@
 const { render, screen } = require("@testing-library/react");
-const { TaskItem } = require("./TaskItem");
+const { TaskItem } = require("./TaskItemComponent");
 
 describe("TaskItem", () => {
   test("the correct checkbox state", async () => {

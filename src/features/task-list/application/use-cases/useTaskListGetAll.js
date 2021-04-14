@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from "react-query";
 import { useTaskListContext } from "../context/useTaskListContext";
 
-export function useTaskListGetAll() {
+export function useTaskListGetAll(additionalOptions = {}) {
   const { taskListRepository } = useTaskListContext();
   const queryClient = useQueryClient();
   return useQuery({
@@ -11,10 +11,12 @@ export function useTaskListGetAll() {
     },
     onSuccess: (data) => {
       data.forEach((taskList) => {
+        queryClient.setQueryData(["task-list", taskList.id], taskList);
         taskList.tasks?.forEach((task) => {
           queryClient.setQueryData(["task", task.id], task);
         });
       });
     },
+    ...additionalOptions,
   });
 }

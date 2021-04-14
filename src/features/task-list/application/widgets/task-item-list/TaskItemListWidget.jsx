@@ -1,21 +1,21 @@
+import { componentStateHookFactory } from "app/component-state/componentStateHookFactory";
 import React, { Suspense } from "react";
 import {
   useTaskItemListInTaskListCreateDialog,
   useTaskItemListOnTaskListPage,
-} from "./hookProviders";
+} from "./taskItemListWidgetState";
 
-const providers = {
-  default: useTaskItemListOnTaskListPage,
+const hooks = {
+  taskListPage: useTaskItemListOnTaskListPage,
   taskListCreateDialog: useTaskItemListInTaskListCreateDialog,
 };
 
-const useTaskItemListState = ({ provider = "default", ...rest }) => {
-  const useProviderHook = providers[provider];
+const useTaskItemListState = componentStateHookFactory(hooks, [
+  "taskListPage",
+  "taskListCreateDialog",
+]);
 
-  return useProviderHook(rest);
-};
-
-export const TaskItemList = (props) => {
+export const TaskItemListWidget = (props) => {
   const {
     children,
     newTaskItem: NewTaskItem,

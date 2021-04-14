@@ -1,7 +1,7 @@
 import { useDialogContext } from "features/dialog/application/context/useDialogContext";
 import { createTaskListDialogToken } from "features/task-list/domain/constants";
 import { useEffect } from "react";
-import { TaskListCreateDialog } from "../components/task-list-create-dialog/TaskListCreateDialog";
+import { TaskListCreateDialog } from "../widgets/task-list-create-dialog/TaskListCreateDialogWidget";
 
 export function useTaskListShowCreateDialog() {
   const {
@@ -12,7 +12,7 @@ export function useTaskListShowCreateDialog() {
 
   useEffect(() => {
     dialogRegisterHandler(createTaskListDialogToken, TaskListCreateDialog);
-    
+
     return () => dialogUnregisterHandler(createTaskListDialogToken);
   }, [dialogRegisterHandler, dialogUnregisterHandler]);
 

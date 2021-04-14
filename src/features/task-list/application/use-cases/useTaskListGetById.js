@@ -10,7 +10,7 @@ export function useTaskListGetById(externalId, queryOptions = {}) {
 
   return useQuery({
     queryKey: ["task-list", queryKeyId],
-    queryFn: () => taskListRepository.getById(id),
+    queryFn: () => taskListRepository.getById(queryKeyId),
     ...queryOptions,
     onSuccess: (data) => {
       const tasks = data.tasks;

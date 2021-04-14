@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { TaskListCard } from "./TaskListCard";
+import { TaskListCard } from "./TaskListCardComponent";
 
 const mockHistoryPush = jest.fn();
 

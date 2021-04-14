@@ -1,23 +1,23 @@
+import { componentStateHookFactory } from "app/component-state/componentStateHookFactory";
 import PropTypes from "prop-types";
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import {
   useTaskItemInTaskListCreateDialog,
-  useTaskItemOnTaskListPage,
-} from "./hookProviders";
+  useTaskItemOnTaskListPage
+} from "./taskItemComponentState";
 
-const providers = {
-  default: useTaskItemOnTaskListPage,
+const hooks  = {
+  taskListPage: useTaskItemOnTaskListPage,
   taskListCreateDialog: useTaskItemInTaskListCreateDialog,
 };
 
-const useTaskItemState = ({ provider = "default", ...rest }) => {
-  const useProviderHook = useMemo(() => providers[provider], [provider]);
+const useTaskItemComponentState = componentStateHookFactory(hooks, [
+  "taskListPage",
+  "taskListCreateDialog"
+]);
 
-  return useProviderHook(rest);
-};
-
-export const TaskItem = memo((props) => {
-  const { taskItem, error, isFetched, onCheckHandler } = useTaskItemState(
+export const TaskItemComponent = memo((props) => {
+  const { taskItem, error, isFetched, onCheckHandler } = useTaskItemComponentState(
     props
   );
 
@@ -42,7 +42,9 @@ export const TaskItem = memo((props) => {
   );
 });
 
-TaskItem.propTypes = {
+TaskItemComponent.displayName = "TaskItemComponent"
+
+TaskItemComponent.propTypes = {
   id: PropTypes.number,
   provider: PropTypes.oneOf(["default", "taskListCreateDialog"]),
 };
