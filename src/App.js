@@ -1,4 +1,4 @@
-import { UseCaseContainer } from "app/use-case-container/UseCaseContainer";
+import { UseCaseContainer } from "app/use-case/use-case-container/UseCaseContainer";
 import { DialogContextProvider } from "app/dialog/application/context/DialogContextProvider";
 import { TaskListContextProvider } from "features/task-list/application/context/TaskListContextProvider";
 import { TaskListPage } from "pages/task-list/task-list-page/TaskListPage";
@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Provider as ReduxProvider } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { applicationStore } from "store/store";
+import { applicationStore } from "lib/redux/store/redux-store";
 import "./App.css";
 import { TaskListViewPage } from "./pages/task-list/TaskListViewPage";
 

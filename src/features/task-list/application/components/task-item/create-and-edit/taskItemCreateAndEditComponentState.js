@@ -1,7 +1,6 @@
-import { createTaskListDialogStateActions } from "features/task-list/application/state/createTaskListDialogState";
-import { useTaskListCreateTask } from "features/task-list/application/use-cases/useTaskListCreateTask";
-import { useDispatchAction } from "lib/redux/useDispatchAction";
-import { useCallback, useRef, useState } from "react";
+import { useCase } from "app/use-case/use-case-container/UseCaseContainer";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useParams } from "react-router";
 
 const useTaskTitle = () => {
   const [newTaskTitle, setNewTaskTitle] = useState("");
@@ -30,14 +29,22 @@ export const useTaskItemCreateAndEditOnTaskListPage = () => {
     setNewTaskListTitleHandler,
   } = useTaskTitle();
 
-  const { mutate, isLoading } = useTaskListCreateTask({
-    onSettledCallback: () => {
+  const { subscribe, dispatch, addEventListener } = useCase(
+    "taskCreateInTaskList"
+  );
+
+  const { id: taskListId } = useParams();
+
+  const isLoading = subscribe("isLoading");
+
+  useEffect(() => {
+    addEventListener("onSuccess", () => {
       setNewTaskTitle("");
       setTimeout(() => {
         newTaskInputRef.current?.focus();
       }, 0);
-    },
-  });
+    });
+  }, [addEventListener, newTaskInputRef, setNewTaskTitle]);
 
   const taskCreateSubmitHandler = useCallback(
     (e) => {
@@ -45,9 +52,12 @@ export const useTaskItemCreateAndEditOnTaskListPage = () => {
       if (newTaskTitle.trim().length === 0) {
         return;
       }
-      mutate({ task: { title: newTaskTitle } });
+      dispatch({
+        type: "task/create",
+        payload: { task: { title: newTaskTitle }, taskListId },
+      });
     },
-    [mutate, newTaskTitle]
+    [dispatch, newTaskTitle, taskListId]
   );
 
   return {
@@ -67,9 +77,7 @@ export const useTaskItemCreateAndEditInTaskListCreateDialog = () => {
     setNewTaskListTitleHandler,
   } = useTaskTitle();
 
-  const addTaskHandler = useDispatchAction(
-    createTaskListDialogStateActions.addTask
-  );
+  const { dispatch } = useCase("taskCreateInTaskListCreateDialog");
 
   const taskCreateSubmitHandler = useCallback(
     (e) => {
@@ -77,13 +85,13 @@ export const useTaskItemCreateAndEditInTaskListCreateDialog = () => {
       if (newTaskTitle.trim().length === 0) {
         return;
       }
-      addTaskHandler({ title: newTaskTitle });
+      dispatch({ type: "addTask", payload: { title: newTaskTitle } });
       setNewTaskTitle("");
       setTimeout(() => {
         newTaskInputRef.current?.focus();
       }, 0);
     },
-    [addTaskHandler, newTaskInputRef, newTaskTitle, setNewTaskTitle]
+    [dispatch, newTaskInputRef, newTaskTitle, setNewTaskTitle]
   );
 
   return {

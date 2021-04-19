@@ -1,15 +1,7 @@
-import { useDispatchAction } from "lib/redux/useDispatchAction";
+import { useCase } from "app/use-case/use-case-container/UseCaseContainer";
 import { useRegisterReducer } from "lib/redux/useRegisterReducer";
-import { useSelectState } from "lib/redux/useSelectState";
-import { useCallback, useState } from "react";
-import {
-  createTaskListDialogStateActions,
-  createTaskListDialogStateSlice,
-  createTaskListStateDialogSelectors,
-} from "../../state/createTaskListDialogState";
-import { useTaskListCloseCreateDialog } from "../../use-cases/useTaskListCloseCreateDialog";
-import { useTaskListCreate } from "../../use-cases/useTaskListCreate";
-import { useTaskListCreateTask } from "../../use-cases/useTaskListCreateTask";
+import { useCallback } from "react";
+import { createTaskListDialogStateSlice } from "../../state/createTaskListDialogState";
 
 export const useTaskListCreateDialogState = () => {
   useRegisterReducer(
@@ -17,50 +9,19 @@ export const useTaskListCreateDialogState = () => {
     createTaskListDialogStateSlice.reducer
   );
 
-  const [taskListProcessing, setTaskListProcessing] = useState(false);
+  const { subscribe, dispatch } = useCase("taskListCreateDialog");
 
-  const { closeTaskListCreateDialog } = useTaskListCloseCreateDialog();
+  const taskListTitle = subscribe("task-list/title");
+  const taskListProcessing = subscribe("task-list/processing");
 
-  const taskListTitle = useSelectState(
-    createTaskListStateDialogSelectors.selectTitle
+  const updateTaskListTitleHandler = useCallback(
+    (taskList) =>
+      dispatch({ type: "task-list/title-update", payload: taskList }),
+    [dispatch]
   );
-
-  const taskListTasks = useSelectState(
-    createTaskListStateDialogSelectors.selectTasks
-  );
-
-  // TODO: Add throttling here
-  const updateTaskListTitleHandler = useDispatchAction(
-    createTaskListDialogStateActions.updateTitle
-  );
-
-  const { mutateAsync } = useTaskListCreate({});
-
-  const taskListMutation = useTaskListCreateTask({
-    params: { optimistic: false },
-  });
-
   const createTaskListHandler = useCallback(
-    async (e) => {
-      e.preventDefault();
-      setTaskListProcessing(true);
-      const newTaskList = await mutateAsync({ title: taskListTitle });
-
-      const taskListMutations = taskListTasks.map((task) =>
-        taskListMutation.mutateAsync({ task, taskListId: newTaskList.id })
-      );
-
-      await Promise.all(taskListMutations);
-      closeTaskListCreateDialog();
-      setTaskListProcessing(false);
-    },
-    [
-      closeTaskListCreateDialog,
-      mutateAsync,
-      taskListMutation,
-      taskListTasks,
-      taskListTitle,
-    ]
+    (e) => dispatch({ type: "task-list/create", payload: e }),
+    [dispatch]
   );
 
   return {
@@ -68,6 +29,5 @@ export const useTaskListCreateDialogState = () => {
     taskListProcessing,
     createTaskListHandler,
     updateTaskListTitleHandler,
-    closeTaskListCreateDialog,
   };
 };

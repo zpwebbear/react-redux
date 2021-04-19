@@ -1,3 +1,4 @@
+//@ts-check
 import { useRedirect } from "features/shared/application/useRedirect";
 import { useCallback } from "react";
 import { useTaskListGetById } from "../../use-cases/useTaskListGetById";
