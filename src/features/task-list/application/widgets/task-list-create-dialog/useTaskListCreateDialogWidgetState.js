@@ -23,11 +23,16 @@ export const useTaskListCreateDialogState = () => {
     (e) => dispatch({ type: "task-list/create", payload: e }),
     [dispatch]
   );
+  const closeTaskListCreateDialogHandler = useCallback(
+    () => dispatch({ type: "task-list/close-create-dialog" }),
+    [dispatch]
+  );
 
   return {
     taskListTitle,
     taskListProcessing,
     createTaskListHandler,
     updateTaskListTitleHandler,
+    closeTaskListCreateDialogHandler,
   };
 };

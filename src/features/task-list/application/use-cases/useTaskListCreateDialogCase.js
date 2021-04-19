@@ -4,11 +4,9 @@ import { useTaskCreate } from "features/task-list/infrastructure/repositories/Ta
 import {
   useTaskListTasks,
   useTaskListTitle,
-  useUpdateTaskListTitle,
+  useUpdateTaskListTitle
 } from "features/task-list/infrastructure/repositories/TaskReduxRepository";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import { createTaskListStateDialogSelectors } from "../state/createTaskListDialogState";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useTaskListCreate } from "./useTaskListCreate";
 
 export const useTaskListCreateDialogCase = () => {
