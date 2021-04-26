@@ -1,4 +1,4 @@
-import { useCaseFactory } from "app/use-case/use-case-factory/useCaseFactory";
+import { useCaseFactory } from "app/use-case/useCaseFactory";
 import { addTaskToTaskList } from "features/task-list/domain/addTaskToTaskList";
 import { useTaskCreate } from "features/task-list/infrastructure/repositories/TaskReactQueryRepository";
 import { useMemo, useRef } from "react";
@@ -25,8 +25,9 @@ export const useTaskCreateInTaskListCase = () => {
     onError: (_, variables, context) => {
       queryClient.setQueryData(["task-list", variables.taskListId], context);
     },
-    onSuccess: (...args) => {
-      events.current.get("onSuccess").forEach((cb) => cb(...args));
+    onSuccess: (data, variables, context) => {
+      events.current.get("onSuccess").forEach((cb) => cb(data, variables, context));
+      queryClient.invalidateQueries(["task-list", variables.taskListId])
     },
   });
 

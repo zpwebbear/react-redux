@@ -1,7 +1,5 @@
-const {
-  componentStateHookFactory,
-} = require("app/component-state/componentStateHookFactory");
-const { useOnTaskListViewPage } = require("./taskListViewPageHeaderState");
+import { componentStateHookFactory } from "app/component-state/componentStateHookFactory";
+import { useOnTaskListViewPage } from "./taskListViewPageHeaderState";
 
 const hooks = {
   taskListViewPage: useOnTaskListViewPage,

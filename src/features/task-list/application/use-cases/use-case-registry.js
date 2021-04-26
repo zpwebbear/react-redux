@@ -1,13 +1,15 @@
 import { useTaskCreateInTaskListCase } from "./useTaskCreateInTaskListCase";
 import { useTaskCreateInTaskListCreateDialogCase } from "./useTaskCreateInTaskListCreateDialogCase";
-import { useTaskListCloseCreateDialog } from "./useTaskListCloseCreateDialog";
 import { useTaskListCreateDialogCase } from "./useTaskListCreateDialogCase";
+import { useTaskListShowCreateDialogCase } from "./useTaskListShowCreateDialogCase";
+import { useTaskSelectAndUpdateByIdCase } from "./useTaskSelectAndUpdateByIdCase";
 
 const registry = [
-  ["taskCreateInTaskList", useTaskCreateInTaskListCase],
-  ["taskCreateInTaskListCreateDialog", useTaskCreateInTaskListCreateDialogCase],
-  ["taskListCloseCreateDialog", useTaskListCloseCreateDialog],
-  ["taskListCreateDialog", useTaskListCreateDialogCase],
+  ["task/create/in-task-list", useTaskCreateInTaskListCase],
+  ["task/create/in-task-list-create-dialog", useTaskCreateInTaskListCreateDialogCase],
+  ["task-list/create/dialog", useTaskListCreateDialogCase],
+  ["task/select-and-update/api", useTaskSelectAndUpdateByIdCase],
+  ["task-list/create-dialog", useTaskListShowCreateDialogCase],
 ];
 
 export default registry;

@@ -1,4 +1,4 @@
-import { useCase } from "app/use-case/use-case-container/UseCaseContainer";
+import { useCase } from "app/container/appContainer";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 
@@ -30,7 +30,7 @@ export const useTaskItemCreateAndEditOnTaskListPage = () => {
   } = useTaskTitle();
 
   const { subscribe, dispatch, addEventListener } = useCase(
-    "taskCreateInTaskList"
+    "task/create/in-task-list"
   );
 
   const { id: taskListId } = useParams();
@@ -77,7 +77,7 @@ export const useTaskItemCreateAndEditInTaskListCreateDialog = () => {
     setNewTaskListTitleHandler,
   } = useTaskTitle();
 
-  const { dispatch } = useCase("taskCreateInTaskListCreateDialog");
+  const { dispatch } = useCase("task/create/in-task-list-create-dialog");
 
   const taskCreateSubmitHandler = useCallback(
     (e) => {

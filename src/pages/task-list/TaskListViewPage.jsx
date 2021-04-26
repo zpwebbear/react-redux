@@ -9,7 +9,7 @@ export const TaskListViewPage = () => {
       <TaskListViewPageHeaderComponent context="taskListViewPage" />
       <Suspense fallback={<div>Task Lists Are Loading...</div>}>
         <TaskListCardListWidget context="taskListViewPage">
-          <TaskListCardComponent context="taskListPage" />
+          <TaskListCardComponent context="taskListViewPage" />
         </TaskListCardListWidget>
       </Suspense>
     </>

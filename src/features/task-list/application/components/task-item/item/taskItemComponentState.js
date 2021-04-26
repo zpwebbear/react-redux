@@ -1,27 +1,31 @@
-import { useTaskListContext } from "features/task-list/application/context/useTaskListContext";
+import { useCase } from "app/container/appContainer";
 import {
   createTaskListDialogStateActions,
-  createTaskListStateDialogSelectors,
+  createTaskListStateDialogSelectors
 } from "features/task-list/application/state/createTaskListDialogState";
-import { useTaskListUpdateTaskById } from "features/task-list/application/use-cases/useTaskListUpdateTaskById";
 import { useDispatchAction } from "lib/redux/useDispatchAction";
 import { useSelectState } from "lib/redux/useSelectState";
 import { useCallback } from "react";
-import { useQuery } from "react-query";
+import { useParams } from "react-router";
 
 export const useTaskItemOnTaskListPage = ({ id }) => {
-  const { taskRepository } = useTaskListContext();
 
-  const { data: taskItem, error, isFetched } = useQuery({
-    queryKey: ["task", id],
-    queryFn: () => taskRepository.getById(id),
-    staleTime: Infinity,
-    suspense: true,
+  const {id: taskListId} = useParams();
+  const { subscribe, dispatch } = useCase("task/select-and-update/api", {
+    id,
+    taskListId
   });
-  const { mutate } = useTaskListUpdateTaskById();
+
+  const taskItem = subscribe("task/item");
+  const error = subscribe("task/error");
+  const isFetched = subscribe("task/is-fetched");
+
   const onCheckHandler = useCallback(() => {
-    mutate({ id, updated: { completed: !taskItem?.completed } });
-  }, [id, mutate, taskItem?.completed]);
+    dispatch({
+      type: "task/update",
+      payload: { id, body: { completed: !taskItem?.completed } },
+    });
+  }, [dispatch, id, taskItem?.completed]);
 
   return { taskItem, error, isFetched, onCheckHandler };
 };

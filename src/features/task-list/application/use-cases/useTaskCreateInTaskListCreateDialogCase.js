@@ -1,4 +1,4 @@
-import { useCaseFactory } from "app/use-case/use-case-factory/useCaseFactory";
+import { useCaseFactory } from "app/use-case/useCaseFactory";
 import { useCallback, useMemo, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { createTaskListDialogStateActions } from "../state/createTaskListDialogState";

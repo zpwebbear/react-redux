@@ -1,11 +1,11 @@
-import { useTaskListGetAll } from "../../use-cases/useTaskListGetAll";
+import { useTaskListIdsQuery } from "../../queries/useTaskListIdsQuery";
 
 export const useTaskListCardListOnTaskListViewPage = ({ children }) => {
-  const { data: taskLists, error, isFetched } = useTaskListGetAll({
-    suspense: true,
-    staleTime: Infinity
-  });
-  const taskListIds = taskLists.map((taskList) => taskList.id);
+  const { subscribe } = useTaskListIdsQuery();
+
+  const taskListIds = subscribe("task-list/ids");
+  const error = subscribe("task-list/error");
+  const isFetched = subscribe("task-list/is-fetched");
 
   return {
     taskListIds,

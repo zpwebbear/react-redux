@@ -7,7 +7,9 @@ export function FetchApi() {
 
   this._fetchToJson = async (url, ...args) => {
     const response = await window.fetch(url, ...args);
-
+    if (response.ok === false) {
+      throw new Error(response.statusText);
+    }
     return response.json();
   };
 

@@ -1,4 +1,4 @@
-import { UseCaseContainer } from "app/use-case/use-case-container/UseCaseContainer";
+import { UseCaseContainer } from "app/container/appContainer";
 import { DialogContextProvider } from "app/dialog/application/context/DialogContextProvider";
 import { TaskListContextProvider } from "features/task-list/application/context/TaskListContextProvider";
 import { TaskListPage } from "pages/task-list/task-list-page/TaskListPage";
@@ -17,7 +17,7 @@ function App() {
     <Router>
       <UseCaseContainer>
         <QueryClientProvider client={queryClient}>
-          {/* <ReactQueryDevtools initialIsOpen={true} /> */}
+          <ReactQueryDevtools initialIsOpen={true} />
           <TaskListContextProvider>
             <ReduxProvider store={applicationStore}>
               <DialogContextProvider>

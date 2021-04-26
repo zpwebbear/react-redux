@@ -1,12 +1,12 @@
+import { useCase } from "app/container/appContainer";
 import { useCallback } from "react";
-import { useTaskListShowCreateDialog } from "../../use-cases/useTaskListShowCreateDialog";
 
-export const useOnTaskListViewPage = (props) => {
-  const { showTaskListCreateDialog } = useTaskListShowCreateDialog();
+export const useOnTaskListViewPage = () => {
+  const { dispatch } = useCase("task-list/create-dialog");
 
   const showTaskListCreateDialogHandler = useCallback(() => {
-    showTaskListCreateDialog();
-  }, [showTaskListCreateDialog]);
+    dispatch({ type: "task-list/create-dialog/show" });
+  }, [dispatch]);
 
   return {
     showTaskListCreateDialogHandler,

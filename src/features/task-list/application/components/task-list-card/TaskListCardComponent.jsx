@@ -2,11 +2,11 @@ import { componentStateHookFactory } from "app/component-state/componentStateHoo
 import { useTaskListCardOnTaskListPage } from "./taskListCardComponentState";
 
 const hooks = {
-  taskListPage: useTaskListCardOnTaskListPage,
+  taskListViewPage: useTaskListCardOnTaskListPage,
 };
 
 const useTaskListCardComponentState = componentStateHookFactory(hooks, [
-  "taskListPage",
+  "taskListViewPage",
 ]);
 
 export const TaskListCardComponent = (props) => {
