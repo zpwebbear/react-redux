@@ -2,51 +2,44 @@ import { useCaseRegistry, useQueryRegistry } from "app-config";
 import React, { useContext, useMemo, useState } from "react";
 import { useCommandRegistry } from "../../app-config";
 
-export const UseCaseContainerContext = React.createContext({});
+export const AppContainerContext = React.createContext({});
 
-export const useCase = (token, params) => {
-  const { cases } = useContext(UseCaseContainerContext);
-  if (!cases.has(token)) {
-    throw new Error(
-      `There are no registered use cases with the next token - ${token}`
-    );
-  }
-  const useCaseByToken = useMemo(() => cases.get(token), [token, cases]);
+const errorMessageConstructor = (entityTypeName) => (_, token) =>
+  `There are no registered ${entityTypeName} with the next token - ${token}`;
 
-  return useCaseByToken(params);
+const errorFunctionsMap = {
+  cases: errorMessageConstructor("use cases"),
+  queries: errorMessageConstructor("use queries"),
+  commands: errorMessageConstructor("commands"),
 };
 
-export const useQuery = (token, params) => {
-  const { queries } = useContext(UseCaseContainerContext);
-  if (!queries.has(token)) {
-    throw new Error(
-      `There are no registered queries with the next token - ${token}`
-    );
-  }
-  const useQueryByToken = useMemo(() => queries.get(token), [token, queries]);
+const appContainerHookFactory = (entityType) => {
+  function useAppContainerHook(token, params) {
+    const context = useContext(AppContainerContext);
+    const entity = context[entityType];
+    if (!entity.has(token)) {
+      throw new Error(errorFunctionsMap[entityType]`${token}`);
+    }
 
-  return useQueryByToken(params);
+    const useEntityByToken = useMemo(() => entity.get(token), [entity, token]);
+
+    return useEntityByToken(params);
+  }
+
+  return useAppContainerHook;
 };
 
-export const useCommand = (token, params) => {
-  const { commands } = useContext(UseCaseContainerContext);
-  if (!commands.has(token)) {
-    throw new Error(
-      `There are no registered commands with the next token - ${token}`
-    );
-  }
-  const useCommandByToken = useMemo(() => commands.get(token), [token, commands]);
+export const useCase = appContainerHookFactory("cases");
+export const useQuery = appContainerHookFactory("queries");
+export const useCommands = appContainerHookFactory("commands");
 
-  return useCommandByToken(params);
-};
-
-export const UseCaseContainer = ({ children }) => {
+export const AppContainer = ({ children }) => {
   const [useCaseContainer] = useState(new Map(useCaseRegistry));
   const [useQueryContainer] = useState(new Map(useQueryRegistry));
   const [useCommandContainer] = useState(new Map(useCommandRegistry));
 
   return (
-    <UseCaseContainerContext.Provider
+    <AppContainerContext.Provider
       value={{
         cases: useCaseContainer,
         queries: useQueryContainer,
@@ -54,6 +47,6 @@ export const UseCaseContainer = ({ children }) => {
       }}
     >
       {children}
-    </UseCaseContainerContext.Provider>
+    </AppContainerContext.Provider>
   );
 };
