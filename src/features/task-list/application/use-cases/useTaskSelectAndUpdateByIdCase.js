@@ -1,4 +1,4 @@
-import { useCaseFactory } from "app/use-case/useCaseFactory";
+import { useCaseFactory } from "app/container/useCaseFactory";
 import {
   useTaskGetById,
   useTaskUpdateById,

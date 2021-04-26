@@ -31,12 +31,16 @@ const appContainerHookFactory = (entityType) => {
 
 export const useCase = appContainerHookFactory("cases");
 export const useQuery = appContainerHookFactory("queries");
-export const useCommands = appContainerHookFactory("commands");
+export const useCommand = appContainerHookFactory("commands");
 
 export const AppContainer = ({ children }) => {
-  const [useCaseContainer] = useState(new Map(useCaseRegistry));
-  const [useQueryContainer] = useState(new Map(useQueryRegistry));
-  const [useCommandContainer] = useState(new Map(useCommandRegistry));
+  const [useCaseContainer] = useState(new Map(Object.entries(useCaseRegistry)));
+  const [useQueryContainer] = useState(
+    new Map(Object.entries(useQueryRegistry))
+  );
+  const [useCommandContainer] = useState(
+    new Map(Object.entries(useCommandRegistry))
+  );
 
   return (
     <AppContainerContext.Provider

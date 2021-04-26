@@ -1,4 +1,5 @@
-import { useCaseFactory } from "app/use-case/useCaseFactory";
+import { createHookEntity } from "app/container/createHookEntity";
+import { useCaseFactory } from "app/container/useCaseFactory";
 import { addTaskToTaskList } from "features/task-list/domain/addTaskToTaskList";
 import { useTaskCreate } from "features/task-list/infrastructure/repositories/TaskReactQueryRepository";
 import { useMemo, useRef } from "react";
@@ -26,14 +27,17 @@ export const useTaskCreateInTaskListCase = () => {
       queryClient.setQueryData(["task-list", variables.taskListId], context);
     },
     onSuccess: (data, variables, context) => {
-      events.current.get("onSuccess").forEach((cb) => cb(data, variables, context));
-      queryClient.invalidateQueries(["task-list", variables.taskListId])
+      events.current
+        .get("onSuccess")
+        .forEach((cb) => cb(data, variables, context));
+      queryClient.invalidateQueries(["task-list", variables.taskListId]);
     },
   });
 
-  const subscribable = useMemo(() => new Map([["isLoading", isLoading]]), [
-    isLoading,
-  ]);
+  const subscribable = useMemo(
+    () => createHookEntity({ isLoading: isLoading }),
+    [isLoading]
+  );
   const dispatchable = useMemo(() => new Map([["task/create", mutate]]), [
     mutate,
   ]);

@@ -1,5 +1,5 @@
 import { useDialogContext } from "app/dialog/application/context/useDialogContext";
-import { useCaseFactory } from "app/use-case/useCaseFactory";
+import { useCaseFactory } from "app/container/useCaseFactory";
 import { createTaskListDialogToken } from "features/task-list/domain/constants";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { TaskListCreateDialog } from "../widgets/task-list-create-dialog/TaskListCreateDialogWidget";

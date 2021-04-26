@@ -1,4 +1,5 @@
-import { useCaseFactory } from "app/use-case/useCaseFactory";
+import { createHookEntity } from "app/container/createHookEntity";
+import { useCaseFactory } from "app/container/useCaseFactory";
 import { useTaskListGetAllIds } from "features/task-list/infrastructure/repositories/TaskListReactQueryRepository";
 import { useMemo, useRef } from "react";
 import { useQueryClient } from "react-query";
@@ -24,11 +25,11 @@ export const useTaskListIdsQuery = () => {
 
   const subscribable = useMemo(
     () =>
-      new Map([
-        ["task-list/ids", taskListIds],
-        ["task-list/is-fetched", isFetched],
-        ["task-list/error", error],
-      ]),
+      createHookEntity({
+        "task-list/ids": taskListIds,
+        "task-list/is-fetched": isFetched,
+        "task-list/error": error,
+      }),
     [error, isFetched, taskListIds]
   );
   const dispatchable = useMemo(() => new Map(), []);

@@ -1,5 +1,5 @@
 import { useDialogContext } from "app/dialog/application/context/useDialogContext";
-import { useCaseFactory } from "app/use-case/useCaseFactory";
+import { useCaseFactory } from "app/container/useCaseFactory";
 import { useTaskCreate } from "features/task-list/infrastructure/repositories/TaskReactQueryRepository";
 import {
   useTaskListTasks,
