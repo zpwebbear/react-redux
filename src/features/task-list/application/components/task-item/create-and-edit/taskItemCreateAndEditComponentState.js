@@ -1,6 +1,5 @@
-import { useCase } from "app/container/appContainer";
+import { useAppCase, useAppQuery } from "app/container/appContainer";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router";
 
 const useTaskTitle = () => {
   const [newTaskTitle, setNewTaskTitle] = useState("");
@@ -29,11 +28,12 @@ export const useTaskItemCreateAndEditOnTaskListPage = () => {
     setNewTaskListTitleHandler,
   } = useTaskTitle();
 
-  const { subscribe, dispatch, addEventListener } = useCase(
+  const { subscribe, dispatch, addEventListener } = useAppCase(
     "task/create/in-task-list"
   );
 
-  const { id: taskListId } = useParams();
+  const appRouterParams = useAppQuery("app/router/params", { token: "id" });
+  const taskListId = appRouterParams.subscribe("id");
 
   const isLoading = subscribe("isLoading");
 
@@ -77,7 +77,7 @@ export const useTaskItemCreateAndEditInTaskListCreateDialog = () => {
     setNewTaskListTitleHandler,
   } = useTaskTitle();
 
-  const { dispatch } = useCase("task/create/in-task-list-create-dialog");
+  const { dispatch } = useAppCase("task/create/in-task-list-create-dialog");
 
   const taskCreateSubmitHandler = useCallback(
     (e) => {
@@ -85,7 +85,7 @@ export const useTaskItemCreateAndEditInTaskListCreateDialog = () => {
       if (newTaskTitle.trim().length === 0) {
         return;
       }
-      dispatch({ type: "addTask", payload: { title: newTaskTitle } });
+      dispatch({ type: "task/add", payload: { title: newTaskTitle } });
       setNewTaskTitle("");
       setTimeout(() => {
         newTaskInputRef.current?.focus();

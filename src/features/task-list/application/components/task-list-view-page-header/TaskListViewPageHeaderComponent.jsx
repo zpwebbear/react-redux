@@ -1,8 +1,8 @@
 import { componentStateHookFactory } from "app/component-state/componentStateHookFactory";
-import { useOnTaskListViewPage } from "./taskListViewPageHeaderState";
+import { useTaskListViewHeaderTaskListViewPage } from "./taskListViewPageHeaderState";
 
 const hooks = {
-  taskListViewPage: useOnTaskListViewPage,
+  taskListViewPage: useTaskListViewHeaderTaskListViewPage,
 };
 
 const useTaskListViewPageHeaderState = componentStateHookFactory(hooks, [

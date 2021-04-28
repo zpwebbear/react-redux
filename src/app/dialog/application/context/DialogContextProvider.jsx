@@ -130,7 +130,7 @@ export const DialogContextProvider = ({ children }) => {
       <>
         {children}
         {dialogs.map((Dialog) =>
-          ReactDOM.createPortal(<Dialog />, document.body),
+          ReactDOM.createPortal(<Dialog />, document.body)
         )}
       </>
     </DialogContext.Provider>

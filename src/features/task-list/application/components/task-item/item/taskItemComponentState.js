@@ -1,4 +1,4 @@
-import { useCase } from "app/container/appContainer";
+import { useAppCase } from "app/container/appContainer";
 import {
   createTaskListDialogStateActions,
   createTaskListStateDialogSelectors
@@ -11,7 +11,7 @@ import { useParams } from "react-router";
 export const useTaskItemOnTaskListPage = ({ id }) => {
 
   const {id: taskListId} = useParams();
-  const { subscribe, dispatch } = useCase("task/select-and-update/api", {
+  const { subscribe, dispatch } = useAppCase("task/select-and-update/api", {
     id,
     taskListId
   });

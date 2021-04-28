@@ -29,9 +29,9 @@ const appContainerHookFactory = (entityType) => {
   return useAppContainerHook;
 };
 
-export const useCase = appContainerHookFactory("cases");
-export const useQuery = appContainerHookFactory("queries");
-export const useCommand = appContainerHookFactory("commands");
+export const useAppCase = appContainerHookFactory("cases");
+export const useAppQuery = appContainerHookFactory("queries");
+export const useAppCommand = appContainerHookFactory("commands");
 
 export const AppContainer = ({ children }) => {
   const [useCaseContainer] = useState(new Map(Object.entries(useCaseRegistry)));

@@ -1,5 +1,5 @@
-import { createHookEntity } from "app/container/createHookEntity";
-import { useCaseFactory } from "app/container/useCaseFactory";
+import { createHookEntity } from "app/container/utils/createHookEntity";
+import { useCaseFactory } from "app/container/utils/useCaseFactory";
 import { addTaskToTaskList } from "features/task-list/domain/addTaskToTaskList";
 import { useTaskCreate } from "features/task-list/infrastructure/repositories/TaskReactQueryRepository";
 import { useMemo, useRef } from "react";

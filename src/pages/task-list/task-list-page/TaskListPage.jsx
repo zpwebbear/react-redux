@@ -7,8 +7,8 @@ import { Suspense } from "react";
 export const TaskListPage = () => {
   return (
     <div>
-      <TaskListPageHeaderComponent context="taskListPage" />
       <Suspense fallback={<div>Task List Loading...</div>}>
+        <TaskListPageHeaderComponent context="taskListPage" />
         <TaskItemListWidget
           context="taskListPage"
           newTaskItem={

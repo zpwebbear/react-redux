@@ -1,4 +1,4 @@
-import { useCase } from "app/container/appContainer";
+import { useAppCase } from "app/container/appContainer";
 import { useRegisterReducer } from "lib/redux/useRegisterReducer";
 import { useCallback } from "react";
 import { createTaskListDialogStateSlice } from "../../state/createTaskListDialogState";
@@ -9,7 +9,7 @@ export const useTaskListCreateDialogState = () => {
     createTaskListDialogStateSlice.reducer
   );
 
-  const { subscribe, dispatch } = useCase("task-list/create/dialog");
+  const { subscribe, dispatch } = useAppCase("task-list/create/dialog");
 
   const taskListTitle = subscribe("task-list/title");
   const taskListProcessing = subscribe("task-list/processing");

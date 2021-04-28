@@ -1,7 +1,8 @@
+import { createHookEntity } from "app/container/utils/createHookEntity";
+import { useCaseFactory } from "app/container/utils/useCaseFactory";
 import { useDialogContext } from "app/dialog/application/context/useDialogContext";
-import { useCaseFactory } from "app/container/useCaseFactory";
 import { createTaskListDialogToken } from "features/task-list/domain/constants";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { TaskListCreateDialog } from "../widgets/task-list-create-dialog/TaskListCreateDialogWidget";
 
 export function useTaskListShowCreateDialogCase() {
@@ -11,12 +12,6 @@ export function useTaskListShowCreateDialogCase() {
     dialogUnregisterHandler,
   } = useDialogContext();
 
-  useEffect(() => {
-    dialogRegisterHandler(createTaskListDialogToken, TaskListCreateDialog);
-
-    return () => dialogUnregisterHandler(createTaskListDialogToken);
-  }, [dialogRegisterHandler, dialogUnregisterHandler]);
-
   const showTaskListCreateDialog = useCallback(() => {
     dialogOpenHandler(createTaskListDialogToken);
   }, [dialogOpenHandler]);
@@ -24,8 +19,20 @@ export function useTaskListShowCreateDialogCase() {
   const events = useRef(new Map());
   const subscribable = useMemo(() => new Map(), []);
   const dispatchable = useMemo(
-    () => new Map([["task-list/create-dialog/show", showTaskListCreateDialog]]),
-    [showTaskListCreateDialog]
+    () =>
+      createHookEntity({
+        "task-list/create-dialog/show": showTaskListCreateDialog,
+        "task-list/create-dialog/register": dialogRegisterHandler.bind(
+          null,
+          createTaskListDialogToken,
+          TaskListCreateDialog
+        ),
+        "task-list/create-dialog/unregister": dialogUnregisterHandler.bind(
+          null,
+          createTaskListDialogToken
+        ),
+      }),
+    [dialogRegisterHandler, dialogUnregisterHandler, showTaskListCreateDialog]
   );
 
   return useCaseFactory({ dispatchable, subscribable, events });

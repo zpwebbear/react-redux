@@ -9,7 +9,7 @@ export function useRedirect() {
     (path) => {
       return () => void history.push(path);
     },
-    [history],
+    [history]
   );
 
   return { redirectTo };

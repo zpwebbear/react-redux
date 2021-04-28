@@ -1,18 +1,19 @@
+import { useAppCommand, useAppQuery } from "app/container/appContainer";
 import { useCallback } from "react";
-import { useHistory } from "react-router";
-import { useTaskListGetById } from "../../use-cases/useTaskListGetById";
 
 export const useTaskListCardOnTaskListPage = ({ id }) => {
-  const history = useHistory();
-  const { data: taskListTitle } = useTaskListGetById(id, {
-    select: (t) => t.title,
-    suspense: true,
-    staleTime: Infinity,
-  });
+  const { dispatch } = useAppCommand("app/redirect");
+
+  const { subscribe } = useAppQuery("task-list/get/title", { id });
+
+  const taskListTitle = subscribe("task-list/title");
 
   const cardClickHandler = useCallback(() => {
-    history.push(`/task-list/${id}`);
-  }, [history, id]);
+    dispatch({
+      type: "redirect-to",
+      payload: `/task-list/${id}`,
+    });
+  }, [dispatch, id]);
 
   return {
     taskListTitle,

@@ -1,7 +1,7 @@
-import { useTaskListIdsQuery } from "../../queries/useTaskListIdsQuery";
+import { useAppQuery } from "app/container/appContainer";
 
 export const useTaskListCardListOnTaskListViewPage = ({ children }) => {
-  const { subscribe } = useTaskListIdsQuery();
+  const { subscribe } = useAppQuery("task-list/get/ids");
 
   const taskListIds = subscribe("task-list/ids");
   const error = subscribe("task-list/error");
