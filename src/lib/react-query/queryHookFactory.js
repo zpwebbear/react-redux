@@ -6,10 +6,11 @@ export const reactQueryMutationFactory = (api, method) => {
 };
 
 export const reactQueryQueryFactory = (api, method, options) => {
-  return (queryKey, queryFnParams, queryOptions = {},) => useQuery({
-    queryKey,
-    queryFn: () => api[method](queryFnParams),
-    ...options,
-    ...queryOptions
-  }); 
-}
+  return ({ queryKey, queryFnParams, queryOptions = {} }) =>
+    useQuery({
+      queryKey,
+      queryFn: () => api[method](queryFnParams),
+      ...options,
+      ...queryOptions,
+    });
+};

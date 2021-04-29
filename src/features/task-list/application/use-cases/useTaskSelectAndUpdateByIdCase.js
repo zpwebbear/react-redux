@@ -1,7 +1,6 @@
 import { useCaseFactory } from "app/container/utils/useCaseFactory";
 import {
-  useTaskGetById,
-  useTaskUpdateById,
+  useTaskUpdateById
 } from "features/task-list/infrastructure/repositories/TaskReactQueryRepository";
 import { useMemo, useRef } from "react";
 import { useQueryClient } from "react-query";
@@ -9,12 +8,7 @@ import { useQueryClient } from "react-query";
 export const useTaskSelectAndUpdateByIdCase = ({ id, taskListId }) => {
   const events = useRef(new Map([["onSuccess", []]]));
   const queryClient = useQueryClient();
-  const { data: taskItem, error, isFetched } = useTaskGetById(
-    ["task", id],
-    id,
-    { staleTime: Infinity, suspense: true }
-  );
-
+  
   const updateTaskById = useTaskUpdateById({
     onMutate: async ({ id: taskId, body }) => {
       await queryClient.cancelQueries(["task", taskId]);
@@ -51,19 +45,10 @@ export const useTaskSelectAndUpdateByIdCase = ({ id, taskListId }) => {
     },
   });
 
-  const subscribable = useMemo(
-    () =>
-      new Map([
-        ["task/item", taskItem],
-        ["task/error", error],
-        ["task/is-fetched", isFetched],
-      ]),
-    [error, isFetched, taskItem]
-  );
   const dispatchable = useMemo(
     () => new Map([["task/update", updateTaskById.mutate]]),
     [updateTaskById.mutate]
   );
 
-  return useCaseFactory({ dispatchable, subscribable, events });
+  return useCaseFactory({ dispatchable, events });
 };

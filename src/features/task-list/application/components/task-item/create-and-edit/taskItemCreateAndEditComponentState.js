@@ -1,4 +1,8 @@
-import { useAppCase, useAppQuery } from "app/container/appContainer";
+import {
+  useAppCase,
+  useAppCommand,
+  useAppQuery,
+} from "app/container/appContainer";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const useTaskTitle = () => {
@@ -77,7 +81,7 @@ export const useTaskItemCreateAndEditInTaskListCreateDialog = () => {
     setNewTaskListTitleHandler,
   } = useTaskTitle();
 
-  const { dispatch } = useAppCase("task/create/in-task-list-create-dialog");
+  const { dispatch } = useAppCommand("task/create/in-task-list-create-dialog");
 
   const taskCreateSubmitHandler = useCallback(
     (e) => {

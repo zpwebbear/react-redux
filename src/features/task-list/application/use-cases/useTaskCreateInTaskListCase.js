@@ -1,13 +1,14 @@
-import { createHookEntity } from "app/container/utils/createHookEntity";
 import { useCaseFactory } from "app/container/utils/useCaseFactory";
+import { useCreateDispatchable } from "app/container/utils/useCreateDispatchable";
+import { useCreateEvents } from "app/container/utils/useCreateEvents";
+import { useCreateSubscribable } from "app/container/utils/useCreateSubscribable";
 import { addTaskToTaskList } from "features/task-list/domain/addTaskToTaskList";
 import { useTaskCreate } from "features/task-list/infrastructure/repositories/TaskReactQueryRepository";
-import { useMemo, useRef } from "react";
 import { useQueryClient } from "react-query";
 
 export const useTaskCreateInTaskListCase = () => {
   const queryClient = useQueryClient();
-  const events = useRef(new Map([["onSuccess", []]]));
+  const events = useCreateEvents({ onSuccess: [] });
 
   const { mutate, isLoading } = useTaskCreate({
     onMutate: async (variables) => {
@@ -34,13 +35,12 @@ export const useTaskCreateInTaskListCase = () => {
     },
   });
 
-  const subscribable = useMemo(
-    () => createHookEntity({ isLoading: isLoading }),
-    [isLoading]
-  );
-  const dispatchable = useMemo(() => new Map([["task/create", mutate]]), [
-    mutate,
+  const subscribable = useCreateSubscribable({ isLoading: isLoading }, [
+    isLoading,
   ]);
 
+  const dispatchable = useCreateDispatchable({ "task/create": mutate }, [
+    mutate,
+  ]);
   return useCaseFactory({ dispatchable, subscribable, events });
 };

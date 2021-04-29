@@ -1,8 +1,8 @@
-import { useAppCase } from "app/container/appContainer";
+import { useAppCommand } from "app/container/appContainer";
 import { useCallback, useEffect } from "react";
 
 export const useTaskListViewHeaderTaskListViewPage = () => {
-  const { dispatch } = useAppCase("task-list/create-dialog");
+  const { dispatch } = useAppCommand("task-list/create-dialog");
 
   useEffect(() => {
     dispatch({ type: "task-list/create-dialog/register" });

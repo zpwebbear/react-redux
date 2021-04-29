@@ -8,10 +8,10 @@ export const useTaskListIdsQuery = () => {
   const events = useRef(new Map());
 
   const queryClient = useQueryClient();
-  const { data: taskListIds, isFetched, error } = useTaskListGetAllIds(
-    ["task-list"],
-    {},
-    {
+  const { data: taskListIds, isFetched, error } = useTaskListGetAllIds({
+    queryKey: ["task-list"],
+    queryFnParams: {},
+    queryOptions: {
       onSuccess: () => {
         const taskLists = queryClient.getQueryData(["task-list"]);
         taskLists.forEach((taskList) => {
@@ -20,8 +20,8 @@ export const useTaskListIdsQuery = () => {
       },
       suspense: true,
       staleTime: Infinity,
-    }
-  );
+    },
+  });
 
   const subscribable = useMemo(
     () =>
