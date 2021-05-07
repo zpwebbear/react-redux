@@ -20,3 +20,30 @@ export const useUpdateTaskListTitle = () => {
   return (...args) =>
     dispatch(createTaskListDialogStateActions.updateTitle(...args));
 };
+
+export const useTaskIds = () =>
+  useSelector(
+    createTaskListStateDialogSelectors.selectTaskIds,
+    (prev, next) => prev.length === next.length
+  );
+
+export const useTask = (id) =>
+  useSelector((state) =>
+    createTaskListStateDialogSelectors.selectTaskById(state, id)
+  );
+
+const useTaskUpdateById = () => {
+  const dispatch = useDispatch();
+
+  return (task) =>
+    dispatch(createTaskListDialogStateActions.updateTaskById(task));
+};
+
+export const taskReduxRepository = {
+  useAddTask,
+  useTaskListTitle,
+  useUpdateTaskListTitle,
+  useTaskIds,
+  useTask,
+  useTaskUpdateById,
+};

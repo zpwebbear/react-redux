@@ -1,5 +1,4 @@
 import { componentStateHookFactory } from "app/component-state/componentStateHookFactory";
-import PropTypes from "prop-types";
 import { memo } from "react";
 import {
   useTaskItemInTaskListCreateDialog,
@@ -43,8 +42,3 @@ export const TaskItemComponent = memo((props) => {
 });
 
 TaskItemComponent.displayName = "TaskItemComponent"
-
-TaskItemComponent.propTypes = {
-  id: PropTypes.number,
-  provider: PropTypes.oneOf(["default", "taskListCreateDialog"]),
-};

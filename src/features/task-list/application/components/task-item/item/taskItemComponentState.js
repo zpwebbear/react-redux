@@ -1,47 +1,43 @@
-import { useAppCase, useAppQuery } from "app/container/appContainer";
-import {
-  createTaskListDialogStateActions,
-  createTaskListStateDialogSelectors,
-} from "features/task-list/application/state/createTaskListDialogState";
-import { useDispatchAction } from "lib/redux/useDispatchAction";
-import { useSelectState } from "lib/redux/useSelectState";
+import { useAppCommand, useAppQuery } from "app/container/appContainer";
 import { useCallback } from "react";
-import { useParams } from "react-router";
 
 export const useTaskItemOnTaskListPage = ({ id }) => {
-  const { id: taskListId } = useParams();
-  const { dispatch } = useAppCase("task/select-and-update/api", {
-    id,
+  const taskItemQuery = useAppQuery("task/get/at-task-list-page", { id });
+  const appRouterParamsQuery = useAppQuery("app/router/params", {
+    token: "id",
+  });
+  const taskListId = appRouterParamsQuery.subscribe("id");
+  const taskUpdateCommand = useAppCommand("task/update/task-list-page", {
     taskListId,
   });
-
-  const taskItemQuery = useAppQuery("task/get/title", { id });
 
   const taskItem = taskItemQuery.subscribe("task/item");
   const error = taskItemQuery.subscribe("task/error");
   const isFetched = taskItemQuery.subscribe("task/is-fetched");
 
   const onCheckHandler = useCallback(() => {
-    dispatch({
+    taskUpdateCommand.dispatch({
       type: "task/update",
       payload: { id, body: { completed: !taskItem?.completed } },
     });
-  }, [dispatch, id, taskItem?.completed]);
+  }, [id, taskItem?.completed, taskUpdateCommand]);
 
   return { taskItem, error, isFetched, onCheckHandler };
 };
 
 export const useTaskItemInTaskListCreateDialog = ({ id }) => {
-  const taskItem = useSelectState(
-    createTaskListStateDialogSelectors.selectTaskById,
-    id
-  );
+  const taskItemQuery = useAppQuery("task/get/at-task-create-dialog", { id });
+  const taskItem = taskItemQuery.subscribe("task/item");
 
-  const onCheckHandler = useDispatchAction(() =>
-    createTaskListDialogStateActions.updateTaskById({
-      id,
-      completed: !taskItem.completed,
-    })
+  const taskCommand = useAppCommand("task/update/at-task-list-create-dialog");
+
+  const onCheckHandler = useCallback(
+    () =>
+      taskCommand.dispatch({
+        type: "task/update",
+        payload: { id, completed: !taskItem.completed },
+      }),
+    [id, taskCommand, taskItem.completed]
   );
 
   return { taskItem, error: false, isFetched: true, onCheckHandler };

@@ -1,21 +1,22 @@
-import { createTaskListStateDialogSelectors } from "features/task-list/application/state/createTaskListDialogState";
-import { useTaskListGetById } from "features/task-list/application/use-cases/useTaskListGetById";
-import { useSelectState } from "lib/redux/useSelectState";
+import { useAppQuery } from "app/container/appContainer";
 
 export const useTaskItemListOnTaskListPage = (props) => {
-  const { data: taskList, error, isFetched } = useTaskListGetById(null, {
-    suspense: true,
+  const appRouterParamsQuery = useAppQuery("app/router/params", {
+    token: "id",
   });
+  const taskListId = appRouterParamsQuery.subscribe("id");
+  const { subscribe } = useAppQuery("task/ids/task-list-page", { taskListId });
+  
+  const taskIds = subscribe("task/ids");
+  const error = subscribe("task/error");
+  const isFetched = subscribe("task/is-fetched");
 
-  const taskIds = taskList.tasks.map((task) => task.id);
   return { ...props, taskIds, error, isFetched };
 };
 
 export const useTaskItemListInTaskListCreateDialog = (props) => {
-  const taskIds = useSelectState(
-    createTaskListStateDialogSelectors.selectTaskIds,
-    (prev, next) => prev.length === next.length
-  );
+  const { subscribe } = useAppQuery("task/ids/task-create-dialog");
+  const taskIds = subscribe("task/ids");
 
   return { ...props, taskIds, error: false, isFetched: true };
 };

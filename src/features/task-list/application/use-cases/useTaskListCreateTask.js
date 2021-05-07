@@ -36,7 +36,6 @@ export const useTaskListCreateTask = ({
           queryClient.setQueryData(
             ["task-list", queryKeyId],
             (existedTaskList) => {
-              console.log("DDDD", existedTaskList, queryKeyId);
               return addTaskToTaskList(existedTaskList, variables.task);
             }
           );

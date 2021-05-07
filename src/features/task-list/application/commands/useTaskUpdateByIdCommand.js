@@ -5,7 +5,7 @@ import {
 import { useMemo, useRef } from "react";
 import { useQueryClient } from "react-query";
 
-export const useTaskSelectAndUpdateByIdCase = ({ id, taskListId }) => {
+export const useTaskUpdateByIdCommand = ({ taskListId }) => {
   const events = useRef(new Map([["onSuccess", []]]));
   const queryClient = useQueryClient();
   

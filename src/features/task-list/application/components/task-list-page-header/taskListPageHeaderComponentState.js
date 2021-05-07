@@ -7,7 +7,7 @@ export const useTaskListHeaderOnTaskListPage = () => {
   const appRouterParams = useAppQuery("app/router/params", { token: "id" });
   const id = appRouterParams.subscribe("id");
 
-  const { subscribe } = useAppQuery("task-list/get/title", { id });
+  const { subscribe } = useAppQuery("task-list/get/title", { taskListId: id });
 
   const redirectHandler = useCallback(() => {
     dispatch({ type: "redirect-to", payload: "/" });

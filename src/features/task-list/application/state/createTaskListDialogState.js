@@ -65,7 +65,6 @@ const selectTaskById = createSelector(
   selectTasks,
   (_, id) => id,
   (tasks, id) => {
-    console.count(id)
     return tasks.find((task) => task.id === id);
   }
 );

@@ -4,7 +4,7 @@ import { TaskItemComponent } from "../../components/task-item/item/TaskItemCompo
 import { TaskItemListWidget } from "../task-item-list/TaskItemListWidget";
 import { useTaskListCreateDialogState } from "./useTaskListCreateDialogWidgetState";
 
-export const TaskListCreateDialog = () => {
+export const TaskListCreateDialogWidget = () => {
   const {
     taskListTitle,
     taskListProcessing,

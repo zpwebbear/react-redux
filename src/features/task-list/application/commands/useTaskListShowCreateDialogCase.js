@@ -3,9 +3,9 @@ import { useCreateDispatchable } from "app/container/utils/useCreateDispatchable
 import { useDialogContext } from "app/dialog/application/context/useDialogContext";
 import { createTaskListDialogToken } from "features/task-list/domain/constants";
 import { useCallback } from "react";
-import { TaskListCreateDialog } from "../widgets/task-list-create-dialog/TaskListCreateDialogWidget";
+import { TaskListCreateDialogWidget } from "../widgets/task-list-create-dialog/TaskListCreateDialogWidget";
 
-export function useTaskListShowCreateDialogCase() {
+export const useTaskListShowCreateDialogCommand = () => {
   const {
     dialogOpenHandler,
     dialogRegisterHandler,
@@ -22,7 +22,7 @@ export function useTaskListShowCreateDialogCase() {
       "task-list/create-dialog/register": dialogRegisterHandler.bind(
         null,
         createTaskListDialogToken,
-        TaskListCreateDialog
+        TaskListCreateDialogWidget
       ),
       "task-list/create-dialog/unregister": dialogUnregisterHandler.bind(
         null,
@@ -33,4 +33,4 @@ export function useTaskListShowCreateDialogCase() {
   );
 
   return useCaseFactory({ dispatchable });
-}
+};

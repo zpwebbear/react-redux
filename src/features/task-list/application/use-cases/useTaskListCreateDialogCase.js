@@ -7,7 +7,7 @@ import {
   useUpdateTaskListTitle
 } from "features/task-list/infrastructure/repositories/TaskReduxRepository";
 import { useCallback, useMemo, useRef, useState } from "react";
-import { useTaskListCreate } from "./useTaskListCreate";
+import { useTaskListCreate } from "features/task-list/infrastructure/repositories/TaskListReactQueryRepository";
 
 export const useTaskListCreateDialogCase = () => {
   const { dialogCloseHandler } = useDialogContext();

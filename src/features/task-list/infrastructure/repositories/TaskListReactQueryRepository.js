@@ -18,3 +18,15 @@ export const useTaskListGetAllIds = reactQueryQueryFactory(
     },
   }
 );
+export const useTaskIdsByTaskListId = reactQueryQueryFactory(
+  taskListAPI,
+  "getById",
+  {
+    select: (data) => data.tasks.map((task) => task.id),
+  }
+);
+
+export const useTaskListGetById = reactQueryQueryFactory(
+  taskListAPI,
+  "getById",
+)

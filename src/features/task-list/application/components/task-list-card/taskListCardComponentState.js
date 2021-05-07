@@ -4,7 +4,7 @@ import { useCallback } from "react";
 export const useTaskListCardOnTaskListPage = ({ id }) => {
   const { dispatch } = useAppCommand("app/redirect");
 
-  const { subscribe } = useAppQuery("task-list/get/title", { id });
+  const { subscribe } = useAppQuery("task-list/get/title", { taskListId: id });
 
   const taskListTitle = subscribe("task-list/title");
 
